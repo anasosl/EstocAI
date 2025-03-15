@@ -1,6 +1,5 @@
 import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { Button, InputAdornments } from '../../components';
+import { Navbar, Footer, Button, InputAdornments } from '../../components';
 import { theme } from '../../styles/theme';
 
 export const Home: React.ElementType = () => {
@@ -30,6 +29,7 @@ export const Home: React.ElementType = () => {
 				borderFocused={`1px solid ${theme.colors.azulEscuro}`}
 				borderHover={`1px solid ${theme.colors.azulClaro}`}
 			/>
+			<Footer />
 		</div>
 	);
 };
