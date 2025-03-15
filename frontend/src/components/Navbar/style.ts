@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import '@fontsource/alata'; // Import Alata font
+import 'typeface-alata'; // Import the Alata font
 
 export const NavbarContainer = styled.nav`
 	font-family: 'Alata', sans-serif; // Use Alata font
@@ -27,7 +27,7 @@ export const NavLinks = styled.div`
 export const NavLink = styled.a`
 	color: #fff;
 	text-decoration: none;
-	margin: 0 15px;
+	margin: 0 30px;
 	font-size: 18px;
 	transition: color 0.3s;
 
