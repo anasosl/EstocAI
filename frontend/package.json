@@ -26,6 +26,7 @@
     "react-router-dom": "^6.24.1",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.11",
+    "typeface-alata": "^1.1.13",
     "typescript": "^5.0.4",
     "web-vitals": "^3.3.1"
   },
@@ -34,7 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepare": "husky install",
+    "prepare": "cd .. && husky install frontend/.husky",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
     "lint": "eslint \"**/*.{ts,tsx}\"",
