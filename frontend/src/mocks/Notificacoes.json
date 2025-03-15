@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "tipo": "ESTOQUE CRÍTICO",
+    "titulo": "Estoque de Amoxicilina crítico: 17 dias até fim do estoque.",
+    "descricao": "É necessária uma ação urgente."
+  },
+  {
+    "id": 2,
+    "tipo": "ESTOQUE CRÍTICO",
+    "titulo": "Estoque de Amoxicilina crítico: 17 dias até fim do estoque.",
+    "descricao": "É necessária uma ação urgente."
+  },
+  {
+    "id": 3,
+    "tipo": "ESTOQUE CRÍTICO",
+    "titulo": "Estoque de Paracetamol crítico: 5 dias até fim do estoque.",
+    "descricao": "É necessária uma ação urgente."
+  },
+  {
+    "id": 4,
+    "tipo": "ATENÇÃO",
+    "titulo": "Estoque de Paracetamol atenção: 5 dias até fim do estoque.",
+    "descricao": "É necessária uma ação urgente."
+  },
+  {
+    "id": 5,
+    "tipo": "CUIDADO",
+    "titulo": "Estoque de Paracetamol cuidado: 5 dias até fim do estoque.",
+    "descricao": "É necessária uma ação urgente."
+  }
+]

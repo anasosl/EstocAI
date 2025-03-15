@@ -1,30 +1,36 @@
 import React from "react";
 import styled from "styled-components";
 import assets from '../../assets';
+import { theme } from "../../styles/theme";
 
 const NavbarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #e87c40;
-  padding: 1rem 2rem;
+  background-color: ${theme.colors.laranjaPrincipal};
+  padding: 1.5rem 3rem;
   color: white;
 `;
 
 const Logo = styled.img`
   width: 126px;
   height: 40px;
+  cursor: pointer;
 `;
 
 const NavLinks = styled.ul`
   display: flex;
   list-style: none;
-  gap: 1.5rem;
+  gap: 3rem;
+  display: flex;
+  align-items: center;
 `;
 
 const NavLink = styled.li`
   cursor: pointer;
   font-size: 1rem;
+  font-family: ${theme.fonts.alata};
+
   &:hover {
     text-decoration: underline;
   }
@@ -50,11 +56,11 @@ const Navbar: React.FC = () => {
       <NavLinks>
         <NavLink>Pesquisa por Medicamento</NavLink>
         <NavLink>Relatório Inteligente</NavLink>
+        <Profile>
+          <ProfileImage src={assets.defaultProfile} alt="Perfil" />
+          <span>Fabiana</span>
+        </Profile>
       </NavLinks>
-      <Profile>
-        <ProfileImage src={assets.defaultProfile} alt="Perfil" />
-        <span>Fabiana</span>
-      </Profile>
     </NavbarContainer>
   );
 };
