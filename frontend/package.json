@@ -78,7 +78,6 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.32.2",
     "pinst": "^3.0.0",
-    "prettier": "^3.3.2",
     "prop-types": "^15.8.1",
     "webpack": "^5.79.0"
   }
