@@ -1,8 +1,6 @@
 import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { Button, InputAdornments } from '../../components';
+import { Navbar, Footer, Button, InputAdornments } from '../../components';
 import { theme } from '../../styles/theme';
-import { Footer } from '../../components/Footer';
 
 export const Home: React.ElementType = () => {
 	const [value, setValue] = React.useState('');
