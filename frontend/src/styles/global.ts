@@ -5,6 +5,7 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: ${props => props.theme.fonts.abeezee};
 
     *:focus:not(:focus-visible) {
       outline: none;
@@ -34,14 +35,15 @@ export const GlobalStyle = createGlobalStyle`
       width: 4px;
       border-radius: 10px;
       height: 4px;
-    }
+      background: ${props => props.theme.colors.cinza};
+  }
 
     ::-webkit-scrollbar-track {
       border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb {
-      background-color: #000;
+      background: ${props => props.theme.colors.preto};
       border-radius: 10px;
     }
   }
