@@ -4,16 +4,18 @@ import { theme } from "../../styles/theme";
 import assets from '../../assets'; // Importar a imagem
 import { BackgroundImage, StorangeOrangeBackground, PageContainer, LoginForm, SignUp, StorangeOrangeLogo, CheckboxContainer } from './style';
 import { useNavigate, Link } from 'react-router-dom';
-import { Checkbox } from "@mui/material";
 
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   
   const handleLogin = () => {
-    navigate('/');
+    navigate('/', { state: { logged: true } });
   }
 
+  const handleSignUp = () => {
+	navigate('/Login', { state: { logged: false } });
+  }
   return (
     <PageContainer>
       <LoginForm>
@@ -28,7 +30,7 @@ export const Login: React.FC = () => {
 			<input type="checkbox" id="rememberMe"/>
           	<label htmlFor="rememberMe">Lembre-se de mim</label>
 		  	</CheckboxContainer>
-			<Link to='/Login'>Esqueceu a senha?</Link>
+			<p onClick={handleSignUp}>Esqueceu a senha?</p>
 		  </div>
 		  
 		  
@@ -36,7 +38,7 @@ export const Login: React.FC = () => {
       </LoginForm>
       <SignUp>
         <span>Não tem uma conta?</span>
-		    <Link to='/Login'>Cadastre-se</Link>
+		    <p onClick={handleSignUp}>Cadastre-se</p>
       </SignUp>
       <BackgroundImage src={assets.assetBackground} alt="Background" />
       <StorangeOrangeBackground src={assets.storangeOrangeBackground}/>

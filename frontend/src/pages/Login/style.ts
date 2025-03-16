@@ -11,9 +11,11 @@ export const PageContainer = styled.div`
   align-items: center;
   flex-direction: column;
   z-index: 1;
-  a {
+  p {
 	color: ${theme.colors.laranjaPrincipal};
 	text-decoration: none;
+	cursor: pointer;
+
 	&:hover {
 	  text-decoration: underline;
 	}
@@ -93,9 +95,10 @@ export const LoginForm = styled.div`
 	flex-direction: row;
 	width: 100%;
 }
-  a{
+  p{
     font-size: 12px;
 	width: 150px;
+	cursor: pointer;
   }
 `;
 export const CheckboxContainer = styled.div`

@@ -9,7 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 export const App = (): React.ReactElement => (
 	<ThemeProvider theme={theme}>
 		<BrowserRouter>
-			<Navbar userId={''}/>
+			<Navbar />
 			<PublicRoutes />
 			<GlobalStyle />
 			<Footer />

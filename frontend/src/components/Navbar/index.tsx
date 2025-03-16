@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import assets from '../../assets';
 import { theme } from "../../styles/theme";
@@ -66,20 +67,21 @@ import {
 // `;
 
 interface UserProps {
-	userId: String;
+	userId?: String;
 }
 
-const Navbar: FC<UserProps> = ({ userId }) => {
+const Navbar: FC<UserProps> = ({ userId = 'fabiana' }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = () => {
-    navigate('/Login');
+    navigate('/Login', { state: { logged: false } });
   }
   return (
     <NavbarContainer>
       <Logo src = {assets.storangeWhiteLogo}/>
       <NavLinks>
-        {userId ? (
+        {userId && (!location.state || location.state.logged) ? (
           <>
             <NavLink>Pesquisa por Medicamento</NavLink>
             <NavLink>Relatório Inteligente</NavLink>
@@ -95,9 +97,9 @@ const Navbar: FC<UserProps> = ({ userId }) => {
           <span>Fabiana</span>
         </Profile> */}
         <UserContainer>
-          {userId ? (
+          {userId && (!location.state || location.state.logged) ? (
             <>
-              <UserImage src={assets.Fabiana} alt='User Image' />
+              <UserImage src={assets.Fabiana} alt='User Image' onClick={handleLogin}/>
               <UserInfo>
                 <UserName>Fabiana</UserName>
                 <UserRole>Gerente</UserRole>
