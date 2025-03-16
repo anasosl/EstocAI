@@ -8,6 +8,7 @@ export const PublicRoutes = (): JSX.Element => (
 	<BrowserRouter>
 		<Routes>
 			<Route path='/' element={<Home />} />
+			<Route path='/home' element={<Home />} />
 			<Route path='/relatorio' element={<Relatorio />} />
 			<Route path='/medicamento/:id' element={<MedicamentoPage />} />
 		</Routes>

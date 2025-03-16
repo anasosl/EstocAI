@@ -1,10 +1,38 @@
 import styled from 'styled-components';
 import { theme } from "../../styles/theme";
 
-export const MedicamentoContainer = styled.div`
+type Props = {
+  width?: string;
+  height?: string;
+  color?: string;
+  fontSize?: string;
+  marginLeft?: string;
+  padding?: string;
+};
+
+export const ContainerPage = styled.div`
+  padding: 40px;
+`;
+
+export const Column = styled.div`
+
+`;
+
+export const Inline = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+export const MedicamentoContainer = styled.div<Props>`
+  width: ${(props: any) => props.width || '50%'};
   border: 1px solid #ddd;
   border-radius: 15px;
-  max-width: 600px;
   margin: 0 auto;
   background-color: #fff;
   margin-top: 50px;
@@ -12,6 +40,10 @@ export const MedicamentoContainer = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const MedicamentoHeader = styled.div`
@@ -59,11 +91,17 @@ export const NivelEstoque = styled.p`
   margin-left: 20px;
 `;
 
-export const QuantidadeEstoque = styled.p`
-  font-size: 24px;
-  margin-left: 20px;
+export const Texto = styled.p<Props>`
+  font-size: ${(props) => props.fontSize || '24px'};
+  margin-left: ${(props) => props.marginLeft || '20px'};
   font-weight: bold;
-  color:${theme.colors.laranjaPrincipal};
+  color:${(props) => props.color || theme.colors.laranjaPrincipal};
+`;
+
+export const TextoTopicos = styled.ul<Props>`
+  font-size: ${(props) => props.fontSize || '14px'};
+  color:${(props) => props.color || theme.colors.preto};
+  margin-left: 20px;
 `;
 
 export const ButtonContainer = styled.div`
@@ -112,4 +150,20 @@ export const ProgressBar = styled.div`
 export const Progress = styled.div`
   background-color: #4caf50;
   height: 100%;
+`;
+
+export const Linha = styled.div<Props>`
+  height: ${(props: any) => props.height || '18px'};
+  border-radius: 8px 8px 0 0;
+  background-color: ${theme.colors.laranjaPrincipal};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ContainerBox = styled.div<Props>`
+  padding: ${(props: any) => props.padding};
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;

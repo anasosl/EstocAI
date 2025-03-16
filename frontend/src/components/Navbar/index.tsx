@@ -52,10 +52,10 @@ const ProfileImage = styled.img`
 const Navbar: React.FC = () => {
   return (
     <NavbarContainer>
-      <Logo src = {assets.storangeWhiteLogo}/>
+      <Logo src = {assets.storangeWhiteLogo} onClick={() => window.location.replace('/home')}/>
       <NavLinks>
         <NavLink>Pesquisa por Medicamento</NavLink>
-        <NavLink>Relatório Inteligente</NavLink>
+        <NavLink onClick={() => window.location.replace('/relatorio')}>Relatório Inteligente</NavLink>
         <Profile>
           <ProfileImage src={assets.defaultProfile} alt="Perfil" />
           <span>Fabiana</span>
