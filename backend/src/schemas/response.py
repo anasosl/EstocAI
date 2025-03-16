@@ -79,6 +79,41 @@ class HTTPResponses:
         )
 
     @staticmethod
+    def MEDICINE_NOT_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="MEDICINE not found",
+            status_code=404,
+        )
+
+    @staticmethod
+    def MEDICINE_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="MEDICINE found",
+            status_code=200,
+        )
+
+    @staticmethod
+    def MEDICINE_CREATED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="MEDICINE created",
+            status_code=201,
+        )
+
+    @staticmethod
+    def MEDICINE_DELETED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="MEDICINE deleted",
+            status_code=200,
+        )
+
+    @staticmethod
+    def MEDICINE_UPDATED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="MEDICINE updated",
+            status_code=200,
+        )
+
+    @staticmethod
     def INVALID_CREDENTIALS() -> HttpResponseModel:
         return HttpResponseModel(
             message="Invalid credentials",
