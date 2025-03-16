@@ -227,3 +227,121 @@ class Database():
 
         updated_data["id"] = user_id 
         return {"status": "success", "message": "User updated successfully", "data": updated_data}
+
+    def get_all_companies(self, collection_name: str) -> list:
+        """
+        Get all items from a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection
+
+        Returns:
+        - list
+            A list of all companies in the collection
+
+        """
+
+        collection: Collection = self.db[collection_name]
+        companies = list(collection.find({}, {"_id": 0}))
+        return companies
+
+    def get_company_by_name(self, collection_name: str, name: str) -> dict:
+        """
+        Retrieve an company by its name from a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the user will be stored
+        - name: str
+            The name of the company to retrieve
+
+        Returns:
+        - dict or None:
+            The company if found, None otherwise
+
+        """
+        collection: Collection = self.db[collection_name]
+        company = collection.find_one({"name": str(name)}, {"_id": 0})
+        return company
+
+    def insert_company(self, collection_name: str, company: dict) -> dict:
+        """
+        Insert an company into a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the company will be stored
+        - company: dict
+            The company to insert
+
+        Returns:
+        - dict:
+            The inserted company
+        """
+        company["id"] = str(uuid4())[:self.ID_LENGTH]
+        collection: Collection = self.db[collection_name]
+        company_id = collection.insert_one(company).inserted_id
+        return {
+            "id": str(company_id),
+            **company
+        }
+
+    def delete_company(self, collection_name: str, company_name: dict) -> dict:
+        """
+        Delete an company into a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the company will be stored
+        - company: dict
+            The company to delete
+
+        Returns:
+        - dict:
+            The deleted company
+        """
+        
+        collection: Collection = self.db[collection_name]
+        result = collection.find_one_and_delete({"name": company_name}, {"_id": 0})
+        
+        if result:
+            return {
+                "status": "success",
+                "message": "Company deleted successfully",
+                "data": result
+            }
+        else:
+            return {
+                "status": "failure",
+                "message": "Company not found"
+            }
+
+    def update_company(self, collection_name: str, company_name: str, updated_data: dict) -> dict:
+        """
+        Update an existing Company in a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the Company is stored
+        - company_name: str
+            The ID of the Company to update
+        - updated_data: dict
+            The new data to update the Company with
+
+        Returns:
+        - dict:
+            The updated Company data or a success message
+        """
+        collection: Collection = self.db[collection_name]
+
+        result = collection.update_one(
+            {"name": company_name}, 
+            {"$set": updated_data}
+        )
+
+        if result.matched_count == 0:
+            return {"status": "failure", "message": "Company not found"}
+
+        updated_data["id"] = company_name 
+        return {"status": "success", "message": "Company updated successfully", "data": updated_data}

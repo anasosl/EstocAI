@@ -44,6 +44,41 @@ class HTTPResponses:
         )
 
     @staticmethod
+    def COMPANY_NOT_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="COMPANY not found",
+            status_code=404,
+        )
+
+    @staticmethod
+    def COMPANY_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="COMPANY found",
+            status_code=200,
+        )
+
+    @staticmethod
+    def COMPANY_CREATED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="COMPANY created",
+            status_code=201,
+        )
+
+    @staticmethod
+    def COMPANY_DELETED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="COMPANY deleted",
+            status_code=200,
+        )
+
+    @staticmethod
+    def COMPANY_UPDATED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="COMPANY updated",
+            status_code=200,
+        )
+
+    @staticmethod
     def INVALID_CREDENTIALS() -> HttpResponseModel:
         return HttpResponseModel(
             message="Invalid credentials",

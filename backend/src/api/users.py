@@ -93,6 +93,7 @@ def create_user(user: UserCreateModel) -> HttpResponseModel:
         "name": user.name,
         "email": user.email,
         "role": user.role,
+        "company": user.company,
         "username": username,
         "password": hashed_password,
         "created_at": created_at
