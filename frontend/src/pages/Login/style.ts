@@ -15,6 +15,7 @@ export const PageContainer = styled.div`
 	color: ${theme.colors.laranjaPrincipal};
 	text-decoration: none;
 	cursor: pointer;
+  }
 
 	&:hover {
 	  text-decoration: underline;
