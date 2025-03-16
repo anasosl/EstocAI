@@ -114,6 +114,34 @@ class HTTPResponses:
         )
 
     @staticmethod
+    def NOTIFICATION_NOT_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="NOTIFICATION not found",
+            status_code=404,
+        )
+
+    @staticmethod
+    def NOTIFICATION_FOUND() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="NOTIFICATION found",
+            status_code=200,
+        )
+
+    @staticmethod
+    def NOTIFICATION_CREATED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="NOTIFICATION created",
+            status_code=201,
+        )
+
+    @staticmethod
+    def NOTIFICATION_DELETED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="NOTIFICATION deleted",
+            status_code=200,
+        )
+
+    @staticmethod
     def INVALID_CREDENTIALS() -> HttpResponseModel:
         return HttpResponseModel(
             message="Invalid credentials",

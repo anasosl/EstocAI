@@ -463,3 +463,91 @@ class Database():
 
         updated_data["id"] = medicine_name 
         return {"status": "success", "message": "medicine updated successfully", "data": updated_data}
+
+    def get_all_notifications(self, collection_name: str) -> list:
+        """
+        Get all items from a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection
+
+        Returns:
+        - list
+            A list of all medicines in the collection
+
+        """
+        collection: Collection = self.db[collection_name]
+        notifications = list(collection.find({}, {"_id": 0}))
+        return notifications
+
+    def get_all_notifications_by_type(self, collection_name: str, notification_type: str) -> dict:
+        """
+        Retrieve all notifications by a specific type
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the user will be stored
+        - notification_type: str
+            The type of notifications to retrieve
+
+        Returns:
+        - dict or None:
+            The notifications if found, None otherwise
+
+        """
+        collection: Collection = self.db[collection_name]
+        notifications = list(collection.find({"type": notification_type}, {"_id": 0}))
+        return notifications
+
+    def insert_notification(self, collection_name: str, notification: dict) -> dict:
+        """
+        Insert an notification into a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the notification will be stored
+        - notification: dict
+            The notification to insert
+
+        Returns:
+        - dict:
+            The inserted notification
+        """
+        notification["id"] = str(uuid4())[:self.ID_LENGTH]
+        collection: Collection = self.db[collection_name]
+        notification_id = collection.insert_one(notification).inserted_id
+        return {
+            "id": str(notification_id),
+            **notification
+        }
+
+    def delete_notification(self, collection_name: str, notification_id: dict) -> dict:
+        """
+        Delete an notification into a collection
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the notification will be stored
+        - notification: dict
+            The notification to delete
+
+        Returns:
+        - dict:
+            The deleted notification
+        """
+        
+        collection: Collection = self.db[collection_name]
+        result = collection.find_one_and_delete({"id": notification_id}, {"_id": 0})
+        
+        if result:
+            return {
+                "status": "success",
+                "message": "Notification deleted successfully",
+                "data": result
+            }
+        else:
+            return {
+                "status": "failure",
+                "message": "Notification not found"
+            }
