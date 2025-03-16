@@ -79,12 +79,12 @@ const Navbar: FC<UserProps> = ({ userId = 'fabiana' }) => {
   }
   return (
     <NavbarContainer>
-      <Logo src = {assets.storangeWhiteLogo}/>
+      <Logo src = {assets.storangeWhiteLogo} onClick={() => window.location.replace('/home')}/>
       <NavLinks>
         {userId && (!location.state || location.state.logged) ? (
           <>
             <NavLink>Pesquisa por Medicamento</NavLink>
-            <NavLink>Relatório Inteligente</NavLink>
+            <NavLink onClick={() => window.location.replace('/relatorio')}>Relatório Inteligente</NavLink>
           </>
         ) : (
             <>

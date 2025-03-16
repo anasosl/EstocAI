@@ -3,6 +3,7 @@ const storangeWhiteLogo = require("./storangeWhiteLogo.png");
 const defaultProfile = require("./defaultProfile.png");
 const Remedios = require("./Remedios.png");
 const Fabiana = require("./Fabiana.png");
+const starIconOrange = require("./starIconOrange.png");
 const assetBackground = require("./assetBackground.png");
 const storangeOrangeBackground = require("./storangeOrangeBackground.png");
 const storangeOrangeLogo = require("./storangeOrangeLogo.png");
@@ -12,6 +13,7 @@ export default {
   defaultProfile,
   Remedios,
   Fabiana,
+  starIconOrange,
   assetBackground,
   storangeOrangeBackground,
   storangeOrangeLogo,

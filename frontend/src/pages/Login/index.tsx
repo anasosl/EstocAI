@@ -10,7 +10,7 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   
   const handleLogin = () => {
-    navigate('/', { state: { logged: true } });
+    navigate('/home', { state: { logged: true } });
   }
 
   const handleSignUp = () => {

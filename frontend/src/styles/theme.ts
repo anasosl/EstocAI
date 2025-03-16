@@ -10,6 +10,7 @@ export const theme = {
 		cinzaEscuro: '#505050',
 		bege: '#FFE0B4',
 		azul: '#1F1F67',
+		verde: '#3C9472',
 	},
 	fonts: {
 		abeezee: '"ABeeZee", sans-serif',

@@ -110,7 +110,7 @@ export const Home: React.FC = () => {
         <Column>
           <InsightsContainer>
             <InsightsText>Obtenha insights com os relatórios inteligentes</InsightsText>
-            <InsightsButton>Ver relatório</InsightsButton>
+            <InsightsButton onClick={() => window.location.replace('/relatorio')}>Ver relatório</InsightsButton>
             <InsightsImage src={assets.Remedios} alt="Remédios" />
           </InsightsContainer>
         </Column>
