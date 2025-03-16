@@ -5,9 +5,9 @@ from src.db.__init__ import database as db
 class UserService(ItemServiceMeta):
 
     @staticmethod
-    def get_user(username: str) -> HttpResponseModel:
+    def get_user(email: str) -> HttpResponseModel:
         """Get item by id method implementation"""
-        user = db.get_user_by_username('users', username)
+        user = db.get_user_by_email('users', email)
         if not user:
             return HttpResponseModel(
                 message=HTTPResponses.USER_NOT_FOUND().message,

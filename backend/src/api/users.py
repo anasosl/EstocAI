@@ -8,36 +8,36 @@ import datetime
 router = APIRouter()
 
 @router.get(
-    "/{username}",
+    "/{email}",
     response_model=HttpResponseModel,
     status_code=status.HTTP_200_OK,
-    description="Retrieve an user by its ID",
+    description="Retrieve an user by its email",
     tags=["users"],
     responses={
         status.HTTP_200_OK: {
             "model": HttpResponseModel,
-            "description": "Successfully got user by id",
+            "description": "Successfully got user by email",
         },
         status.HTTP_404_NOT_FOUND: {
             "description": "User not found",
         }
     },
 )
-def get_user(username: str) -> HttpResponseModel:
+def get_user(email: str) -> HttpResponseModel:
     """
     Get user by name.
 
     Parameters:
-    - username: The ID of the user to retrieve.
+    - email: The email of the user to retrieve.
 
     Returns:
-    - The user with the specified ID.
+    - The user with the specified email.
 
     Raises:
     - HTTPException 404: If the user is not found.
 
     """
-    user_get_response = UserService.get_user(username)
+    user_get_response = UserService.get_user(email)
     return user_get_response
 
 

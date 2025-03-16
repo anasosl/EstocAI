@@ -127,7 +127,7 @@ class Database():
 
         return items
 
-    def get_user_by_username(self, collection_name: str, username: str) -> dict:
+    def get_user_by_email(self, collection_name: str, email: str) -> dict:
         """
         Retrieve an user by its ID from a collection
 
@@ -144,7 +144,7 @@ class Database():
         """
         collection: Collection = self.db[collection_name]
 
-        user = collection.find_one({"username": str(username)}, {"_id": 0})
+        user = collection.find_one({"email": str(email)}, {"_id": 0})
         return user
 
     def insert_user(self, collection_name: str, user: dict) -> dict:
