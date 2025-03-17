@@ -35,9 +35,9 @@ export const InputAdornments: FC<InputProps> = props => {
 				setErrorText(!match ? 'Digite seu nome' : null);
 				break;
 
-			case 'password':
+			/*case 'password':
 				setErrorText(!match ? 'Digite sua senha' : null);
-				break;
+				break;*/
 
 			case 'phone':
 				setErrorText(!match ? 'Digite um telefone válido' : null);

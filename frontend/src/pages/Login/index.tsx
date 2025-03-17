@@ -1,9 +1,7 @@
 import React from "react";
-import styled from "styled-components";
-import { theme } from "../../styles/theme";
 import assets from '../../assets'; // Importar a imagem
 import { BackgroundImage, StorangeOrangeBackground, PageContainer, LoginForm, SignUp, StorangeOrangeLogo, CheckboxContainer } from './style';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Login: React.FC = () => {
@@ -14,7 +12,7 @@ export const Login: React.FC = () => {
   }
 
   const handleSignUp = () => {
-	navigate('/Login', { state: { logged: false } });
+	navigate('/cadastro', { state: { logged: false } });
   }
   return (
     <PageContainer>

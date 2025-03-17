@@ -19,6 +19,7 @@ const FooterContainer = styled.footer`
   width: 100%;
   position: fixed;
   bottom: 0;
+  z-index: 5;
 `;
 
 const FooterLine = styled.footer`

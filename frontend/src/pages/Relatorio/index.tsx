@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-import { FaEdit, FaFileExport, FaShoppingCart } from "react-icons/fa";
 import { saveAs } from "file-saver";
+import IconEditar from "../../assets/IconEditar.svg";
+import IconSalvar from "../../assets/IconSalvar.svg";
 
 // ================== Styled Components ==================
 const PageContainer = styled.div`
@@ -258,7 +259,7 @@ export const Relatorio: React.FC = () => {
                   <Td>{item.quantidade}</Td>
                   <Td>
                     <IconButton onClick={() => handleEdit(index)}>
-                      <FaEdit />
+                      <img src={IconEditar} alt="Icone de editar" />
                     </IconButton>
                   </Td>
                 </tr>
@@ -268,10 +269,9 @@ export const Relatorio: React.FC = () => {
 
           <ButtonContainer>
             <IconButton onClick={handleExportCSV}>
-              <FaFileExport />
+              <img src={IconSalvar} alt="Icone de editar" />
             </IconButton>
             <PurchaseButton>
-              <FaShoppingCart />
               Gerar Compra
             </PurchaseButton>
           </ButtonContainer>

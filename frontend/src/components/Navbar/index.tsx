@@ -1,17 +1,12 @@
 import React, { FC } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import styled from "styled-components";
 import assets from '../../assets';
-import { theme } from "../../styles/theme";
-import { PublicRoutes } from '../../routes/routes';
 import {
   NavbarContainer, 
   Logo, 
   NavLinks, 
   NavLink, 
-  Profile, 
-  ProfileImage,
   UserContainer,
 	UserImage,
 	UserInfo,
