@@ -244,17 +244,19 @@ class Database():
 
         collection: Collection = self.db[collection_name]
         companies = list(collection.find({}, {"_id": 0}))
+        for company in companies:
+            company.pop("password")
         return companies
 
-    def get_company_by_name(self, collection_name: str, name: str) -> dict:
+    def get_company_by_email(self, collection_name: str, email: str) -> dict:
         """
-        Retrieve an company by its name from a collection
+        Retrieve an company by its email from a collection
 
         Parameters:
         - collection_name: str
             The name of the collection where the user will be stored
-        - name: str
-            The name of the company to retrieve
+        - email: str
+            The email of the company to retrieve
 
         Returns:
         - dict or None:
@@ -262,7 +264,7 @@ class Database():
 
         """
         collection: Collection = self.db[collection_name]
-        company = collection.find_one({"name": str(name)}, {"_id": 0})
+        company = collection.find_one({"email": str(email)}, {"_id": 0})
         return company
 
     def insert_company(self, collection_name: str, company: dict) -> dict:

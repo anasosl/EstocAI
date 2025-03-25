@@ -5,9 +5,9 @@ from src.db.__init__ import database as db
 class CompanyService(ItemServiceMeta):
 
     @staticmethod
-    def get_company(name: str) -> HttpResponseModel:
-        """Get company by name method implementation"""
-        company = db.get_company_by_name('company', name)
+    def get_company(email: str) -> HttpResponseModel:
+        """Get company by email method implementation"""
+        company = db.get_company_by_email('company', email)
         if not company:
             return HttpResponseModel(
                 message=HTTPResponses.COMPANY_NOT_FOUND().message,

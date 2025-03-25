@@ -4,7 +4,7 @@ from fastapi import APIRouter, status
 from fastapi import Depends
 from passlib.context import CryptContext
 from src.schemas.login import UserLogin
-from src.service.impl.user_service import UserService
+from src.service.impl.company_service import CompanyService
 from src.schemas.response import HTTPResponses, HttpResponseModel
 from src.utils.auth import create_jwt_token, get_current_user
 
@@ -29,13 +29,14 @@ router = APIRouter()
     },
 )
 async def login(login: UserLogin):
-    user = UserService.get_user(login.email)
-    if user.data is None or not pwd_context.verify(login.password, user.data["password"]):
+    company = CompanyService.get_company(login.email)
+    print(company)
+    if company.data is None or not pwd_context.verify(login.password, company.data["password"]):
         return HttpResponseModel(
             message=HTTPResponses.INVALID_CREDENTIALS().message,
             status_code=HTTPResponses.INVALID_CREDENTIALS().status_code,
         )
-    token_data = {"sub": user.data['name']}
+    token_data = {"sub": company.data['name']}
     token = create_jwt_token(data=token_data)
     return HttpResponseModel(
         message="Login successful",
