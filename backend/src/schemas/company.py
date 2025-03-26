@@ -8,6 +8,7 @@ class CompanyCreateModel(BaseModel):
     city: str
     country: str
     email: str
+    password: str
     phone: str
 
 class CompanyUpdateModel(BaseModel):

@@ -18,7 +18,6 @@ def create_jwt_token(data: dict):
 def verify_jwt_token(token: str):
     try:
         decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print(decoded_token)
         return decoded_token if decoded_token["exp"] >= datetime.now(timezone.utc).timestamp() else None
     except jwt.PyJWTError:
         return None

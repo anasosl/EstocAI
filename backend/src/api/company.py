@@ -1,9 +1,10 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
 from src.schemas.response import HttpResponseModel
 from src.service.impl.company_service import CompanyService
 from src.utils.hash_password import hash_password
 from src.schemas.company import CompanyCreateModel, CompanyUpdateModel
-import datetime
+from src.utils.auth import get_current_user
+from typing import Optional
 
 router = APIRouter()
 
@@ -23,7 +24,7 @@ router = APIRouter()
         }
     },
 )
-def get_company(name: str) -> HttpResponseModel:
+def get_company(name: str, current_user: Optional[dict] = Depends(get_current_user)) -> HttpResponseModel:
     """
     Get company by name.
 
@@ -54,7 +55,7 @@ def get_company(name: str) -> HttpResponseModel:
         }
     },
 )
-def get_company() -> HttpResponseModel:
+def get_company(current_user: Optional[dict] = Depends(get_current_user)) -> HttpResponseModel:
     """
     Get all companies.
     Returns:
@@ -85,7 +86,8 @@ def create_company(company: CompanyCreateModel) -> HttpResponseModel:
         Returns:
         - The new created company
     """
-
+    hashed_password = hash_password(company.password)
+    company.password = hashed_password
     new_company_created = CompanyService.create_company(company.model_dump())
     return new_company_created
 
@@ -105,7 +107,7 @@ def create_company(company: CompanyCreateModel) -> HttpResponseModel:
         },
     },
 )
-def delete_company(name: str) -> HttpResponseModel:
+def delete_company(name: str, current_user: Optional[dict] = Depends(get_current_user)) -> HttpResponseModel:
     """
     Delete company by name.
 
@@ -138,7 +140,7 @@ def delete_company(name: str) -> HttpResponseModel:
         },
     },
 )
-def update_company(name: str, company_data: CompanyUpdateModel) -> HttpResponseModel:
+def update_company(name: str, company_data: CompanyUpdateModel, current_user: Optional[dict] = Depends(get_current_user)) -> HttpResponseModel:
     """
     Update company by name.
 
