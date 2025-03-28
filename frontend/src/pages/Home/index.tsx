@@ -30,12 +30,13 @@ const InsightsContainer = styled.div`
   text-align: center;
   align-items: center;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: center;
+  gap: 2rem;
 `;
 
 const InsightsText = styled.h3`
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
+  font-size: 24px;
+  color: ${theme.colors.preto};
 `;
 
 const InsightsButton = styled.button`
@@ -79,6 +80,7 @@ const Column = styled.div`
   flex-direction: column;
   gap: 2rem;
   align-items: center;
+  justify-content: center;
 
   @media screen and (max-width: 768px) {
    width: 100%;
@@ -96,7 +98,7 @@ export const Home: React.FC = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <img src={ButtonBuscar} alt="Pesquisar" />
+              <img src={ButtonBuscar} alt="Pesquisar" style={{ cursor: "pointer" }}/>
             </InputAdornment>
           ),
         }}

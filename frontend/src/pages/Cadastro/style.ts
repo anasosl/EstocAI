@@ -19,7 +19,7 @@ export const PageContainer = styled.div`
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color: ${theme.colors.cinza};
+  background-color: ${theme.colors.corF6F5F8};
   padding: 50px 0;
   z-index: 1;
 `;

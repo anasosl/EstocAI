@@ -21,9 +21,10 @@ export const NavbarContainer = styled.nav`
 // `;
 
 export const Logo = styled.img`
-  width: 126px;
-  height: 40px;
+  width: 180px;
+  height: 100px;
   cursor: pointer;
+	align-self: baseline;
 `;
 
 export const NavLinks = styled.div`
@@ -66,6 +67,7 @@ export const UserImage = styled.img`
 	width: 40px;
 	height: 40px;
 	margin-right: 12px;
+	cursor: pointer;
 `;
 
 export const UserInfo = styled.div`

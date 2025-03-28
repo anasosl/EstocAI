@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
@@ -49,14 +50,14 @@ const FooterLink = styled.li`
 const Footer: React.FC = () => {
   return (
     <FooterContainer>
-        <LinkContainer>
+        {/*<LinkContainer>
         <FooterText>© 2025 StOrange. Todos os direitos reservados.</FooterText>
         <FooterLinks>
             <FooterLink>Política de Privacidade</FooterLink>
             <FooterLink>Termos de Uso</FooterLink>
             <FooterLink>Contato</FooterLink>
         </FooterLinks>
-        </LinkContainer>
+        </LinkContainer>*/}
         <FooterLine />
     </FooterContainer>
   );
