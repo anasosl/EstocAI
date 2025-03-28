@@ -48,7 +48,9 @@ export const Titulo = styled.h3`
 `;
 
 export const StorangeOrangeLogo = styled.img`
-  width: 250px; 
+  width: 300px;
+  height: 200px;
+  margin: -60px 0;
 `;
 
 export const StorangeOrangeBackground = styled.img`
