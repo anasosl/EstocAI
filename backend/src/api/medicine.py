@@ -147,3 +147,35 @@ def update_medicine(name: str, medicine_data: MedicineUpdateModel, current_user:
     medicine_data = medicine_data.model_dump()
     medicine_data = {key: value for key, value in medicine_data.items() if value is not None}
     return MedicineService.update_medicine(name, medicine_data)
+
+@router.get(
+    "/search/{name_pattern}",
+    response_model=HttpResponseModel,
+    status_code=status.HTTP_200_OK,
+    description="Search for medicines by name pattern",
+    tags=["medicine"],
+    responses={
+        status.HTTP_200_OK: {
+            "model": HttpResponseModel,
+            "description": "Successfully found medicines matching the pattern",
+        },
+        status.HTTP_404_NOT_FOUND: {
+            "description": "No medicines found matching the pattern",
+        },
+    },
+)
+def search_medicine(name_pattern: str, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+    """
+    Search for medicines by name pattern.
+    
+    Parameters:
+    - name_pattern: The regex pattern to match medicine names.
+    
+    Returns:
+    - A list of medicines matching the pattern.
+    
+    Raises:
+    - HTTPException 404: If no medicines match the pattern.
+    """
+    return MedicineService.search_medicine(name_pattern)
+
