@@ -12,6 +12,7 @@ const NotificationsContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  background-color: ${theme.colors.corF6F5F8};
 
   .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
     border-radius: 28px;
@@ -40,7 +41,7 @@ const FilterButton = styled.button<{ active?: boolean }>`
 
 const NotificationCard = styled.div`
   background-color: white;
-  border-radius: 10px;
+  border-radius: 17px;
   border: 1px solid #ddd;
   margin-bottom: 1rem;
   display: flex;
@@ -51,10 +52,12 @@ const NotificationCard = styled.div`
 `;
 
 const NotificationHeader = styled.div`
+  max-width: 100%;
+  min-width: 40%;
   background-color: ${(props) => props.color || theme.colors.vermelho};
   color: white;
   padding: 0.5rem;
-  border-radius: 5px 0 5px 0;
+  border-radius: 16px 0 16px 0;
   font-weight: bold;
   width: fit-content;
   display: flex;
@@ -164,20 +167,20 @@ const NotificationCenter: React.FC = () => {
       <NotificacoesContainer>
         {filterNotifications().map((item, index) => (
           <NotificationCard key={Number(index)}>
-          <NotificationHeader color={colorTipo(item.tipo)}>
-            <img src={IconAlerta} alt="Alerta" />
-            <NotificationText>{item.tipo}</NotificationText>
-          </NotificationHeader>
+            <NotificationHeader color={colorTipo(item.tipo)}>
+              <img src={IconAlerta} alt="Alerta" />
+              <NotificationText>{item.tipo}</NotificationText>
+            </NotificationHeader>
 
-          <NotificationBody>
-            <NotificationText color={theme.colors.preto}>
-              {item.titulo}
-            </NotificationText>
-            <NotificationText color={theme.colors.cinzaEscuro}>{item.descricao}</NotificationText>
-            <ViewButton onClick={() => window.location.replace(`/medicamento/${item.id}`)}>Visualizar</ViewButton>
-          </NotificationBody>
-        </NotificationCard>))}
-      </NotificacoesContainer>
+            <NotificationBody>
+              <NotificationText color={theme.colors.preto}>
+                {item.titulo}
+              </NotificationText>
+              <NotificationText color={theme.colors.cinzaEscuro}>{item.descricao}</NotificationText>
+              <ViewButton onClick={() => window.location.replace(`/medicamento/${item.id}`)}>Visualizar</ViewButton>
+            </NotificationBody>
+          </NotificationCard>))}
+        </NotificacoesContainer>
     </NotificationsContainer>
   );
 };

@@ -5,11 +5,15 @@ import { saveAs } from "file-saver";
 import IconEditar from "../../assets/IconEditar.svg";
 import IconSalvar from "../../assets/IconSalvar.svg";
 
+type Props = {
+  $borderRadius?: string;
+};
+
 // ================== Styled Components ==================
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  //align-items: center;
   padding: 2rem;
   background-color: #f5f5f5;
   gap: 2rem;
@@ -19,9 +23,10 @@ const PageContainer = styled.div`
 const Title = styled.h2`
   font-size: 2rem;
   font-weight: bold;
-  color: ${theme.colors.laranjaPrincipal};
-  text-align: center;
+  color: ${theme.colors.preto};
+  text-align: start;
   margin: 0;
+  margin-left: 42px;
 `;
 
 /**
@@ -36,8 +41,8 @@ const ContentWrapper = styled.div`
   margin: 0 auto;
 
   @media screen and (max-width: 1024px) {
+    width: 100%;
     flex-direction: column;
-    align-items: center;
   }
 `;
 
@@ -54,7 +59,7 @@ const ReportCard = styled.div`
   gap: 1rem;
 
   @media screen and (max-width: 1024px) {
-    width: 80%;
+    width: 100%;
   }
 `;
 
@@ -85,33 +90,29 @@ const BulletItem = styled.li`
 /** Container da tabela grande de medicamentos */
 const TableContainer = styled.div`
   width: 65%;
-  background: white;
+  //background: white;
   border-radius: 12px;
-  padding: 1.2rem;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  //box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 
   @media screen and (max-width: 1024px) {
-    width: 80%;
+    width: 100%;
   }
-`;
-
-const TableTitle = styled.h3`
-  font-size: 1.3rem;
-  margin-bottom: 0.8rem;
-  color: #333;
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  background-color: ${theme.colors.branco};
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
 `;
 
-const Th = styled.th`
+const Th = styled.th<Props>`
   background-color: ${theme.colors.laranjaPrincipal};
   color: white;
   padding: 10px;
-  border-radius: 6px;
+  border-radius: ${({ $borderRadius }) => $borderRadius};
   font-size: 0.95rem;
 `;
 
@@ -206,9 +207,46 @@ export const Relatorio: React.FC = () => {
 
   return (
     <PageContainer>
-      <Title>Relatório Inteligente</Title>
+      <Title>Sugestão de Compra</Title>
 
       <ContentWrapper>
+        {/** Tabela principal de medicamentos */}
+        <TableContainer>
+          <Table>
+            <thead>
+              <tr>
+                <Th $borderRadius="6px 0 0 0">Medicamento</Th>
+                <Th>Fornecedor</Th>
+                <Th>Quantidade (caixas)</Th>
+                <Th $borderRadius="0 6px 0 0">Ações</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr key={index}>
+                  <Td>{item.medicamento}</Td>
+                  <Td>{item.fornecedor}</Td>
+                  <Td>{item.quantidade}</Td>
+                  <Td>
+                    <IconButton onClick={() => handleEdit(index)}>
+                      <img src={IconEditar} alt="Icone de editar" />
+                    </IconButton>
+                  </Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+
+          <ButtonContainer>
+            <IconButton onClick={handleExportCSV}>
+              <img src={IconSalvar} alt="Icone de editar" />
+            </IconButton>
+            <PurchaseButton>
+              Gerar Compra
+            </PurchaseButton>
+          </ButtonContainer>
+        </TableContainer>
+
         {/** Card lateral de tendências recentes (bullet points) */}
         <ReportCard>
           <ReportHeader>
@@ -238,44 +276,6 @@ export const Relatorio: React.FC = () => {
             </BulletItem>
           </BulletList>
         </ReportCard>
-
-        {/** Tabela principal de medicamentos */}
-        <TableContainer>
-          <TableTitle>Relatório de Medicamentos</TableTitle>
-          <Table>
-            <thead>
-              <tr>
-                <Th>Medicamento</Th>
-                <Th>Fornecedor</Th>
-                <Th>Quantidade (caixas)</Th>
-                <Th>Ações</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((item, index) => (
-                <tr key={index}>
-                  <Td>{item.medicamento}</Td>
-                  <Td>{item.fornecedor}</Td>
-                  <Td>{item.quantidade}</Td>
-                  <Td>
-                    <IconButton onClick={() => handleEdit(index)}>
-                      <img src={IconEditar} alt="Icone de editar" />
-                    </IconButton>
-                  </Td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-
-          <ButtonContainer>
-            <IconButton onClick={handleExportCSV}>
-              <img src={IconSalvar} alt="Icone de editar" />
-            </IconButton>
-            <PurchaseButton>
-              Gerar Compra
-            </PurchaseButton>
-          </ButtonContainer>
-        </TableContainer>
       </ContentWrapper>
     </PageContainer>
   );

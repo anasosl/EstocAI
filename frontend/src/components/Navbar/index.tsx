@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import assets from '../../assets';
 import {
   NavbarContainer, 
@@ -67,16 +66,27 @@ interface UserProps {
 
 const Navbar: FC<UserProps> = ({ userId = 'fabiana' }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogin = () => {
     navigate('/Login', { state: { logged: false } });
   }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('logged');
+    navigate('/Login', { state: { logged: false } });
+  }
+
   return (
     <NavbarContainer>
-      <Logo src = {assets.storangeWhiteLogo} onClick={() => window.location.replace('/home')}/>
+      <Logo src={assets.storangeWhiteLogo} onClick={() => {
+        if(sessionStorage.getItem('logged') === 'true') {
+          navigate('/home', { state: { logged: true } });
+        } else {
+          navigate('/Login', { state: { logged: false } });
+        }
+      }}/>
       <NavLinks>
-        {userId && (!location.state || location.state.logged) ? (
+        {userId && sessionStorage.getItem('logged') === 'true' ? (
           <>
             <NavLink>Pesquisa por Medicamento</NavLink>
             <NavLink onClick={() => window.location.replace('/relatorio')}>Relatório Inteligente</NavLink>
@@ -92,16 +102,16 @@ const Navbar: FC<UserProps> = ({ userId = 'fabiana' }) => {
           <span>Fabiana</span>
         </Profile> */}
         <UserContainer>
-          {userId && (!location.state || location.state.logged) ? (
+          {userId && sessionStorage.getItem('logged') === 'true' ? (
             <>
-              <UserImage src={assets.Fabiana} alt='User Image' onClick={handleLogin}/>
+              <UserImage src={assets.Fabiana} alt='User Image' onClick={handleLogout}/>
               <UserInfo>
                 <UserName>Fabiana</UserName>
                 <UserRole>Gerente</UserRole>
               </UserInfo>
             </>
           ) : (
-            <LoginButton onClick={handleLogin} >Login</LoginButton>
+            <LoginButton onClick={handleLogin}>Login</LoginButton>
           )}
         </UserContainer>
       </NavLinks>

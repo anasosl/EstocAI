@@ -1,13 +1,47 @@
 import React from "react";
 import assets from '../../assets'; // Importar a imagem
-import { BackgroundImage, StorangeOrangeBackground, PageContainer, LoginForm, SignUp, StorangeOrangeLogo, CheckboxContainer } from './style';
+import { BackgroundImage, StorangeOrangeBackground, PageContainer, 
+  StorangeOrangeLogo, Texto, Box, Titulo, Inline, Button } from './style';
 import { useNavigate } from 'react-router-dom';
+import { theme } from "../../styles/theme";
+import { InputAdornments } from "../../components";
+import { regexEmail } from "../../utils/Regex/regex";
+import { caracterCustomizado, emailMask } from "../../utils/Regex/masks";
+import { Checkbox } from "@mui/material";
 
+type User = {
+  email: string;
+  senha: string;
+  lembrar?: boolean;
+}
 
 export const Login: React.FC = () => {
+    const [userData, setUserData] = React.useState({} as User);
+    const [errorMessages, setErrorMessages] = React.useState({} as User);
+  
+    const checkFields = (): boolean => {
+      const { email, senha } = userData;
+  
+      const errors: any = {
+        email: !regexEmail.test(email) ? 'Digite o email' : '',
+        senha: !senha ? 'Digite a senha' : '',
+      };
+      setErrorMessages(errors);
+  
+      const failed = Object.values(errors).some((value: any) => value !== '');
+  
+      if (failed) {
+        alert('Preencha todos os campos corretamente');
+        return false;
+      }
+  
+      return true;
+    };
+
   const navigate = useNavigate();
   
   const handleLogin = () => {
+    sessionStorage.setItem('logged', 'true');
     navigate('/home', { state: { logged: true } });
   }
 
@@ -16,28 +50,61 @@ export const Login: React.FC = () => {
   }
   return (
     <PageContainer>
-      <LoginForm>
+      <Box>
         <StorangeOrangeLogo src={assets.storangeOrangeLogo} alt="Logo" />
-        <h3>Acesse sua conta</h3>
-        <form>
-          <input type="text" placeholder="Número de telefone ou e-mail" />
-          <input type="password" placeholder="Senha" />
-          <button onClick={handleLogin}>Entrar</button>
-		  <div>
-			<CheckboxContainer>
-			<input type="checkbox" id="rememberMe"/>
-          	<label htmlFor="rememberMe">Lembre-se de mim</label>
-		  	</CheckboxContainer>
-			<p onClick={handleSignUp}>Esqueceu a senha?</p>
-		  </div>
-		  
-		  
-        </form>
-      </LoginForm>
-      <SignUp>
-        <span>Não tem uma conta?</span>
-		    <p onClick={handleSignUp}>Cadastre-se</p>
-      </SignUp>
+        <Titulo>Acesse sua conta</Titulo>
+
+        <InputAdornments
+          id="input-email"
+          placeholder="Email"
+          value={userData.email}
+          setValue={(text: any) => setUserData({ ...userData, email: emailMask(text) })}
+          type="text"
+          width="100%"
+          errorMessage={errorMessages.email}
+        />
+
+        <InputAdornments
+          id="input-senha"
+          placeholder="Senha"
+          value={userData.senha}
+          setValue={(text: any) => setUserData({ ...userData, senha: caracterCustomizado(text, 500) })}
+          type="password"
+          width="100%"
+          errorMessage={errorMessages.senha}
+        />
+
+        <Button
+          onClick={() => {
+            const checked = checkFields();
+            if (checked) {
+              handleLogin();
+            }
+          }}>Entrar</Button>
+
+          <Inline>
+            <Inline $flexDirection="row">
+              <Checkbox
+                checked={userData.lembrar}
+                onChange={(e) => setUserData({ ...userData, lembrar: !userData.lembrar })}
+                style={{ color: theme.colors.laranjaPrincipal }}
+              />
+              <Texto>Lembre-se de mim</Texto>
+            </Inline>
+
+            <Texto $marginLeft="0" color={theme.colors.azul373799} $cursor="pointer">Esqueceu a senha ?</Texto>
+          </Inline>
+        </Box>
+      <Box>
+        <Inline $justifyContent="center" $padding="16px" $flexDirection="row">
+          <Texto>Não tem uma conta ?</Texto>
+          <Texto
+            color={theme.colors.laranjaPrincipal} 
+            fontWeight="bold"
+            $cursor="pointer"
+            onClick={handleSignUp}>Cadastre-se</Texto>
+        </Inline>
+      </Box>
       <BackgroundImage src={assets.assetBackground} alt="Background" />
       <StorangeOrangeBackground src={assets.storangeOrangeBackground}/>
     </PageContainer>

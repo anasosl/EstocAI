@@ -19,7 +19,7 @@ export const PageContainer = styled.div`
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color: ${theme.colors.cinza};
+  background-color: ${theme.colors.corF6F5F8};
   padding: 50px 0;
   z-index: 1;
 `;
@@ -48,7 +48,9 @@ export const Titulo = styled.h3`
 `;
 
 export const StorangeOrangeLogo = styled.img`
-  width: 250px; 
+  width: 300px;
+  height: 200px;
+  margin: -60px 0;
 `;
 
 export const StorangeOrangeBackground = styled.img`
