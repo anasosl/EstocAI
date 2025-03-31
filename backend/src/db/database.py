@@ -4,6 +4,7 @@ from pymongo import MongoClient, errors
 from pymongo.collection import Collection, IndexModel
 from src.config.config import env
 from logging import INFO, WARNING, getLogger
+from src.db.serializers.medicine_serialize import medicines_list_entity
 
 logger = getLogger('uvicorn')
 
@@ -466,6 +467,25 @@ class Database():
         updated_data["id"] = medicine_name 
         return {"status": "success", "message": "medicine updated successfully", "data": updated_data}
 
+
+    def search_medicine(self, collection_name: str, name_pattern: str) -> list:
+        """
+        Search for medicines by name using a regex pattern
+
+        Parameters:
+        - collection_name: str
+            The name of the collection where the medicines are stored
+        - name_pattern: str
+            The regex pattern to match medicine names
+
+        Returns:
+        - list:
+            A list of serialized medicines matching the regex pattern
+        """
+        collection: Collection = self.db[collection_name]
+        medicines = list(collection.find({"name": {"$regex": name_pattern, "$options": "i"}}, {"_id": 0}))
+        return medicines_list_entity(medicines)
+
     def get_all_notifications(self, collection_name: str) -> list:
         """
         Get all items from a collection
@@ -553,3 +573,4 @@ class Database():
                 "status": "failure",
                 "message": "Notification not found"
             }
+
