@@ -1,8 +1,10 @@
 from pymongo import ASCENDING, IndexModel
 from .medicine_collection_example import MEDICINE_COLLECTION_EXAMPLE
 from .user_collection_example import USER_COLLECTION_EXAMPLE
+from .notification_collection_example import NOTIFICATION_COLLECTION_EXAMPLE
 from src.db.schemas.medicine_schema import MedicineSchema
 from src.db.schemas.user_schema import UserSchema
+from src.db.schemas.notifications_schema import NotificationSchema
 from src.db.serializers.schema_serializer import schema_serializer
 
 
@@ -37,3 +39,19 @@ def create_collections(database):
 
         for user in MEDICINE_COLLECTION_EXAMPLE:
             database.insert_user('medicine', user)
+    
+    if 'notification' not in database.db.list_collection_names():
+        collections = ['notification']
+
+        for collection in collections:
+            schema = NotificationSchema()
+            database.create_collection(
+                collection,
+                indexes=[IndexModel([("id", ASCENDING)], unique=True)],
+                validation_schema=schema_serializer(schema.get())
+            )
+
+        for user in NOTIFICATION_COLLECTION_EXAMPLE:
+            database.insert_user('notification', user)
+    
+    
