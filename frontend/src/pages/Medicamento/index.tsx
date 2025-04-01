@@ -1,22 +1,25 @@
 import React from 'react';
 import Estrelas from "../../assets/Estrelas.svg";
-import AlertaTriangulo from "../../assets/AlertaTriangulo.svg";
 import {
   MedicamentoContainer,
   MedicamentoHeader,
   MedicamentoBody,
   MedicamentoInfo,
+  LicitacaoInfo,
   NivelEstoque,
   Texto,
+  ButtonContainer,
+  SatelliteButton,
+  StatusLicitacao,
+  PercentualLicitacao,
+  ProgressBar,
+  Progress,
   Linha,
   Inline,
   ContainerPage,
+  TextoTopicos,
   ContainerBox,
   Column,
-  ContainerBranco,
-  Button,
-  ContainerAlertas,
-  LinhaGradiente,
 } from './style';
 import { theme } from '../../styles/theme';
 import { GraficoBarra, GraficoLinha } from '../../components';
@@ -31,7 +34,7 @@ interface MedicamentoPageProps {
 
 const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
   nome_medicamento = "Paracetamol",
-  nivel_estoque = 21.726,
+  nivel_estoque = 21726,
   status_licitacao = 0.4,
   fornecedores = ["Farmácia 1", "Farmácia 2", "Farmácia 2"],
   relatorio_inteligente = [
@@ -44,49 +47,34 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
   return (
     <ContainerPage>
       <Inline>
-        <Column width='65%'>
-        <MedicamentoContainer>      
-          <MedicamentoHeader>
-            <h2>Dashboard de Estoque - {nome_medicamento}</h2>
-          </MedicamentoHeader>
-
-          <Column padding='14px'>
+        <Column>
+        <MedicamentoContainer width='100%'>      
+          <MedicamentoBody>
             <MedicamentoInfo>
-              <NivelEstoque>Nível de estoque</NivelEstoque>
-              <Texto color={theme.colors.azul000080} fontSize="34px">{nivel_estoque.toLocaleString()} caixas (Total)</Texto>
+          <MedicamentoHeader>
+          <h2>{nome_medicamento}</h2>
+          </MedicamentoHeader>
+            <NivelEstoque>Nível de estoque</NivelEstoque>
+            <Texto>{nivel_estoque.toLocaleString()} caixas (Total)</Texto>
+            <ButtonContainer>
+          <SatelliteButton>Visualizar por satélite</SatelliteButton>
+          </ButtonContainer>
             </MedicamentoInfo>
-
-            <MedicamentoBody>
-              <MedicamentoInfo>
-                <Texto color={theme.colors.preto} fontSize="20px">Almoxarifado</Texto>
-                <Texto color={theme.colors.preto} fontSize="18px">15,000 caixas</Texto>
-              </MedicamentoInfo>
-              <MedicamentoInfo>
-                <Texto color={theme.colors.preto} fontSize="20px">Setor Prediário</Texto>
-                <Texto color={theme.colors.preto} fontSize="18px">2,000 caixas</Texto>
-              </MedicamentoInfo>
-            </MedicamentoBody>
-
-            <MedicamentoBody>
-              <MedicamentoInfo>
-                <Texto color={theme.colors.preto} fontSize="20px">Pronto Socorro</Texto>
-                <Texto color={theme.colors.preto} fontSize="18px">3,000 caixas</Texto>
-              </MedicamentoInfo>
-              <MedicamentoInfo>
-                <Texto color={theme.colors.preto} fontSize="20px">Clínica Médica</Texto>
-                <Texto color={theme.colors.preto} fontSize="18px">-</Texto>
-              </MedicamentoInfo>
-            </MedicamentoBody>
-          </Column>
+            <LicitacaoInfo>
+              <StatusLicitacao>Status da licitação</StatusLicitacao>
+              <PercentualLicitacao>{(status_licitacao * 100).toFixed(0)}% das caixas já foram solicitadas</PercentualLicitacao>
+              <ProgressBar>
+                <Progress style={{ width: `${status_licitacao * 100}%` }}></Progress>
+              </ProgressBar>
+              <h3>Fornecedores</h3>
+              <div>
+                {fornecedores.map((fornecedor, index) => (
+                  <p key={index} style={{ textDecoration: 'underline' }}>{fornecedor}</p>
+                ))}
+              </div>
+            </LicitacaoInfo>
+          </MedicamentoBody>
         </MedicamentoContainer>
-
-        <ContainerBranco>
-          <Column gap="8px">
-            <Texto marginLeft="0" fontSize="16px" color={theme.colors.preto}>Estoques devem atingir ponto de reabastecimento nos próximos 2 meses.</Texto>
-            <Texto marginLeft="0" fontSize="16px" color={theme.colors.preto}>Ação recomendada: iniciar novo pedido de compra.</Texto>
-          </Column>
-          <Button>Fazer pedido</Button>
-        </ContainerBranco>
 
         <MedicamentoContainer width="800px">
           <Linha height="50px">
@@ -107,31 +95,22 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
         </MedicamentoContainer> 
       </Column>
 
-      <Column width='30%'>
-        <ContainerAlertas>
-          <LinhaGradiente />
-          <ContainerBox padding="16px">
-            <Inline justifyContent="flex-start" $flexDirection="row">
-              <img src={Estrelas} alt="estrelas" width={50}/>
-              <Texto marginLeft="0" fontSize="16px" color={theme.colors.preto} margin="8px 0 0 -8px" textAlign="center">Você pode visualizar o relatório completo em formato de texto</Texto>
-            </Inline>
+      <MedicamentoContainer width="30%">
+        <Linha />
+        <ContainerBox padding="16px">
+          <Inline>
+            <img src={Estrelas} alt="Pesquisar" width={100}/>
+            <Texto marginLeft="0" fontSize="16px">Com base nos dados analisados nos últimos três meses, observamos algumas tendências</Texto>
+          </Inline>
 
-            <Button width='80%' borderRadius="30px">Visualizar relatório</Button>
-          </ContainerBox>
-        </ContainerAlertas>
-        
-        <ContainerAlertas>
-          <LinhaGradiente />
-          <ContainerBox padding="16px">
-            <Inline justifyContent="flex-start" $flexDirection="row">
-              <img src={AlertaTriangulo} alt="alerta" width={33}/>
-              <Texto marginLeft="0" fontSize="16px" color={theme.colors.preto} margin="8px 0 0 -8px" textAlign="center">Percebeu algum erro na contagem?</Texto>
-            </Inline>
-
-            <Button width='80%' borderRadius="30px">Reportar erro</Button>
-          </ContainerBox>
-        </ContainerAlertas>
-      </Column>
+          <TextoTopicos>
+            <li><strong>Alta Demanda:</strong> O uso de Paracetamol e Dipirona aumentou em 18%, refletindo um crescimento nos atendimentos de síndromes gripais.</li>
+            <li><strong>Estoque Crítico:</strong> Medicamentos antibióticos, como Amoxicilina e Azitromicina, estão com níveis reduzidos, exigindo reposição em até 15 dias para evitar desabastecimento.</li>
+            <li><strong>Redução no Consumo:</strong> Anti-hipertensivos como Losartana tiveram uma queda de 12%, possivelmente devido a mudanças nos protocolos de prescrição.</li>
+            <li><strong>Picos Sazonais:</strong> O consumo de antialérgicos subiu 25% devido ao aumento de casos relacionados à polinização sazonal e mudanças climáticas.</li>
+          </TextoTopicos>
+        </ContainerBox>
+      </MedicamentoContainer>    
       </Inline>
 
       
