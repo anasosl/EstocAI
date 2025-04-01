@@ -8,24 +8,30 @@ type Props = {
   fontSize?: string;
   marginLeft?: string;
   padding?: string;
+  noColumn?: boolean;
 };
 
 export const ContainerPage = styled.div`
   padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background-color: ${theme.colors.corF6F5F8};
 `;
 
 export const Column = styled.div`
-
 `;
 
-export const Inline = styled.div`
+export const Inline = styled.div<Props>`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
 
   @media screen and (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: ${({noColumn}: Props) => (noColumn ? 'row' : 'column')};
   }
 `;
 
@@ -33,9 +39,7 @@ export const MedicamentoContainer = styled.div<Props>`
   width: ${(props: any) => props.width || '50%'};
   border: 1px solid #ddd;
   border-radius: 15px;
-  margin: 0 auto;
   background-color: #fff;
-  margin-top: 50px;
   min-height: 250px;
   display: flex;
   flex-direction: column;
@@ -86,6 +90,7 @@ export const LicitacaoInfo = styled.div`
 `;
 
 export const NivelEstoque = styled.p`
+
   font-weight: bold;
   margin-top: 30px;
   margin-left: 20px;
@@ -119,6 +124,7 @@ export const SatelliteButton = styled.button`
   border-radius: 30px;
   cursor: pointer;
   font-size: 10px;
+  font-family: ${theme.fonts.abeezee};
 
   &:hover {
     background-color:${theme.colors.laranjaPrincipal};
@@ -161,9 +167,20 @@ export const Linha = styled.div<Props>`
   align-items: center;
 `;
 
+export const LinhaGradiente = styled.div<Props>`
+  height: ${(props: any) => props.height || '18px'};
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 12px;
+  background: linear-gradient(90deg, #FF8C2E 0%, #FFC495 100%);
+`;
+
 export const ContainerBox = styled.div<Props>`
   padding: ${(props: any) => props.padding};
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow: auto;
 `;
