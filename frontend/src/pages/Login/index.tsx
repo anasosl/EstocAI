@@ -8,6 +8,7 @@ import { InputAdornments } from "../../components";
 import { regexEmail } from "../../utils/Regex/regex";
 import { caracterCustomizado, emailMask } from "../../utils/Regex/masks";
 import { Checkbox } from "@mui/material";
+import { useAuth } from "../../context/Auth";
 
 type User = {
   email: string;
@@ -16,8 +17,12 @@ type User = {
 }
 
 export const Login: React.FC = () => {
-    const [userData, setUserData] = React.useState({} as User);
+    const [userData, setUserData] = React.useState({
+      email: 'teste@email.com',
+      senha: '12345',
+    } as User);
     const [errorMessages, setErrorMessages] = React.useState({} as User);
+    const { login } = useAuth();
   
     const checkFields = (): boolean => {
       const { email, senha } = userData;
@@ -41,13 +46,13 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   
   const handleLogin = () => {
-    sessionStorage.setItem('logged', 'true');
-    navigate('/home', { state: { logged: true } });
+    login(userData.email, userData.senha);
   }
 
   const handleSignUp = () => {
-	navigate('/cadastro', { state: { logged: false } });
+	  navigate('/cadastro', { state: { logged: false } });
   }
+
   return (
     <PageContainer>
       <Box>

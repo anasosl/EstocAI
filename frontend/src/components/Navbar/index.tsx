@@ -13,6 +13,7 @@ import {
 	UserRole,
   LoginButton,
 } from './style';
+import { useAuth } from "../../context/Auth";
 
 // const NavbarContainer = styled.nav`
 //   display: flex;
@@ -60,20 +61,17 @@ import {
 //   border-radius: 50%;
 // `;
 
-interface UserProps {
-	userId?: String;
-}
 
-const Navbar: FC<UserProps> = ({ userId = 'fabiana' }) => {
+const Navbar: FC = () => {
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
 
   const handleLogin = () => {
     navigate('/Login', { state: { logged: false } });
   }
 
   const handleLogout = () => {
-    sessionStorage.removeItem('logged');
-    navigate('/Login', { state: { logged: false } });
+    logout();
   }
 
   return (
@@ -86,7 +84,7 @@ const Navbar: FC<UserProps> = ({ userId = 'fabiana' }) => {
         }
       }}/>
       <NavLinks>
-        {userId && sessionStorage.getItem('logged') === 'true' ? (
+        {user?.id && sessionStorage.getItem('logged') === 'true' ? (
           <>
             <NavLink>Pesquisa por Medicamento</NavLink>
             <NavLink onClick={() => window.location.replace('/relatorio')}>Relatório Inteligente</NavLink>
@@ -102,11 +100,11 @@ const Navbar: FC<UserProps> = ({ userId = 'fabiana' }) => {
           <span>Fabiana</span>
         </Profile> */}
         <UserContainer>
-          {userId && sessionStorage.getItem('logged') === 'true' ? (
+          {user?.id && sessionStorage.getItem('logged') === 'true' ? (
             <>
               <UserImage src={assets.Fabiana} alt='User Image' onClick={handleLogout}/>
               <UserInfo>
-                <UserName>Fabiana</UserName>
+                <UserName>{user?.name}</UserName>
                 <UserRole>Gerente</UserRole>
               </UserInfo>
             </>

@@ -71,6 +71,25 @@ export const Cadastro: React.FC = () => {
     });
   };
 
+  const createUser = async () => {
+    await axios.post(`${process.env.REACT_APP_API}/users`, {
+      name: userData.nome,
+      email: userData.email,
+      password: userData.senha,
+      address: userData.endereco,
+      cep: userData.cep,
+      city: userData.cidade,
+      state: userData.estado,
+      phone: userData.telefone,
+    }).then((res: AxiosResponse) => {
+      alert('Cadastro realizado com sucesso!');
+      window.location.replace("/");
+    }).catch((err: any) => {
+      console.log(err?.response?.data?.messages[0] || 'Erro ao cadastrar usuário');
+      alert(err?.response?.data?.messages[0] || 'Erro ao cadastrar usuário');
+    });
+  };
+
   useEffect(() => {
     puxarCEP();
   }, [userData.cep]);
@@ -184,8 +203,7 @@ export const Cadastro: React.FC = () => {
         <Button onClick={() => {
           const checked = checkFields();
           if (checked) {
-            alert('Cadastro realizado com sucesso!');
-            window.location.replace("/");
+            createUser();
           }
         }}>Cadastrar</Button>
       </Box>
