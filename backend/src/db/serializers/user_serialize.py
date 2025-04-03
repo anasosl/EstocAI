@@ -3,6 +3,6 @@ def user_entity(item) -> dict:
     Returns a dict of the item entity
     """
     return {
-        "username": item["username"],
+        "email": item["email"],
         "created_at": item["created_at"],
     }

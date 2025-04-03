@@ -22,7 +22,7 @@ router = APIRouter()
         }
     },
 )
-def get_medicine(name: str, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def get_medicine(name: str) -> HttpResponseModel:
     """
     Get medicine by name.
     
@@ -51,7 +51,7 @@ def get_medicine(name: str, current_user: dict = Depends(get_current_user)) -> H
         }
     },
 )
-def get_medicines(current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def get_medicines() -> HttpResponseModel:
     """
     Get all medicines.
     Returns:
@@ -75,7 +75,7 @@ def get_medicines(current_user: dict = Depends(get_current_user)) -> HttpRespons
         },
     },
 )
-def create_medicine(medicine: MedicineCreateModel, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def create_medicine(medicine: MedicineCreateModel) -> HttpResponseModel:
     """ 
     Create a new medicine.
     
@@ -100,7 +100,7 @@ def create_medicine(medicine: MedicineCreateModel, current_user: dict = Depends(
         },
     },
 )
-def delete_medicine(name: str, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def delete_medicine(name: str) -> HttpResponseModel:
     """
     Delete medicine by name.
     
@@ -131,7 +131,7 @@ def delete_medicine(name: str, current_user: dict = Depends(get_current_user)) -
         },
     },
 )
-def update_medicine(name: str, medicine_data: MedicineUpdateModel, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def update_medicine(name: str, medicine_data: MedicineUpdateModel) -> HttpResponseModel:
     """
     Update medicine by name.
     
@@ -164,7 +164,7 @@ def update_medicine(name: str, medicine_data: MedicineUpdateModel, current_user:
         },
     },
 )
-def search_medicine(name_pattern: str, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def search_medicine(name_pattern: str) -> HttpResponseModel:
     """
     Search for medicines by name pattern.
     

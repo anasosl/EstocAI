@@ -22,7 +22,7 @@ router = APIRouter()
         }
     },
 )
-def get_notification_by_type(type: str, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def get_notification_by_type(type: str) -> HttpResponseModel:
     """
     Get all notifications by type
 
@@ -52,7 +52,7 @@ def get_notification_by_type(type: str, current_user: dict = Depends(get_current
         }
     },
 )
-def get_notifications(current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def get_notifications() -> HttpResponseModel:
     """
     Get all notifications.
     Returns:
@@ -77,7 +77,7 @@ def get_notifications(current_user: dict = Depends(get_current_user)) -> HttpRes
         },
     },
 )
-def create_notification(data: NotificationCreateModel, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def create_notification(data: NotificationCreateModel) -> HttpResponseModel:
     """ 
     Create a new notification
         Returns:
@@ -101,7 +101,7 @@ def create_notification(data: NotificationCreateModel, current_user: dict = Depe
         },
     },
 )
-def delete_notifications(notification_id: str, current_user: dict = Depends(get_current_user)) -> HttpResponseModel:
+def delete_notifications(notification_id: str) -> HttpResponseModel:
     """
     Delete notification by ID.
 

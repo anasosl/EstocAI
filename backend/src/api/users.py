@@ -85,20 +85,10 @@ def create_user(user: UserCreateModel) -> HttpResponseModel:
         Returns:
         - The new created user
     """
-    username = user.username
-    password = user.password
-    hashed_password = hash_password(password)
-    created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    new_user = {
-        "name": user.name,
-        "email": user.email,
-        "role": user.role,
-        "company": user.company,
-        "username": username,
-        "password": hashed_password,
-        "created_at": created_at
-    }
-    new_user_created = UserService.create_user(new_user)
+    user_data = user.model_dump()
+    user_data["password"] = hash_password(user.password)
+    user_data["created_at"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    new_user_created = UserService.create_user(user_data)
     return new_user_created
 
 @router.delete(

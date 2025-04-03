@@ -24,7 +24,7 @@ router = APIRouter()
         }
     },
 )
-def get_company(name: str, current_user: Optional[dict] = Depends(get_current_user)) -> HttpResponseModel:
+def get_company(name: str) -> HttpResponseModel:
     """
     Get company by name.
 
@@ -55,7 +55,7 @@ def get_company(name: str, current_user: Optional[dict] = Depends(get_current_us
         }
     },
 )
-def get_company(current_user: Optional[dict] = Depends(get_current_user)) -> HttpResponseModel:
+def get_company() -> HttpResponseModel:
     """
     Get all companies.
     Returns:
@@ -107,7 +107,7 @@ def create_company(company: CompanyCreateModel) -> HttpResponseModel:
         },
     },
 )
-def delete_company(name: str, current_user: Optional[dict] = Depends(get_current_user)) -> HttpResponseModel:
+def delete_company(name: str) -> HttpResponseModel:
     """
     Delete company by name.
 
@@ -140,7 +140,7 @@ def delete_company(name: str, current_user: Optional[dict] = Depends(get_current
         },
     },
 )
-def update_company(name: str, company_data: CompanyUpdateModel, current_user: Optional[dict] = Depends(get_current_user)) -> HttpResponseModel:
+def update_company(name: str, company_data: CompanyUpdateModel) -> HttpResponseModel:
     """
     Update company by name.
 
