@@ -3,15 +3,20 @@ from pydantic import BaseModel
 
 class UserCreateModel(BaseModel):
     name: str
+    cep: str
+    city: str
+    state: str
+    address: str
     email: str
-    username: str
+    phone: str
     password: str
-    role: str
-    company: str
+    confirmed_password: str
 
 class UserUpdateModel(BaseModel):
     name: Optional[str] = None
+    cep: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    address: Optional[str] = None
     email: Optional[str] = None
-    username: Optional[str] = None
-    role: Optional[str] = None
-    company: Optional[str] = None
+    phone: Optional[str] = None
