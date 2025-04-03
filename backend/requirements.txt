@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic
+pymongo
+python-dotenv
+pytest
+pytest-mongodb
+pytest-bdd
+httpx
+bcrypt
+passlib
+jwt
