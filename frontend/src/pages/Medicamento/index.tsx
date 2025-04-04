@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Estrelas from "../../assets/Estrelas.svg";
 import {
   MedicamentoContainer,
@@ -23,6 +23,7 @@ import {
 } from './style';
 import { theme } from '../../styles/theme';
 import { GraficoBarra, GraficoLinha } from '../../components';
+import { useParams } from 'react-router-dom';
 
 interface MedicamentoPageProps {
   nome_medicamento?: string;
@@ -44,6 +45,62 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
     "Picos Sazonais: O consumo de antialérgicos subiu 25% devido ao aumento de casos relacionados à polinização sazonal e mudanças climáticas."
   ],
 }) => {
+  const [ata, setAta] = useState<any[]>([]);
+  const [empenhos, setEmpenhos] = useState<any[]>([]);
+  const [medicamento, setMedicamento] = useState<any>();
+  const [inputAI, setInputAI] = useState<any>();
+  const { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    fetch('/mocks/csv/medicamentos.csv')
+    .then((res) => res.text())
+    .then((text) => {
+      const json = csvToJson(text);
+      setMedicamento(json.find((item: any) => item.id_medicamento === id));
+      console.log('CSV convertido para JSON:', json);
+    });
+
+    fetch('/mocks/csv/empenhos.csv')
+      .then((res) => res.text())
+      .then((text) => {
+        const json = csvToJson(text);
+        setEmpenhos(json);
+        console.log('CSV convertido para JSON:', json);
+      });
+
+      fetch('/mocks/csv/atas_registro_precos.csv')
+      .then((res) => res.text())
+      .then((text) => {
+        const json = csvToJson(text);
+        setAta(json.filter((item: any) => item.id_medicamento === id));
+        console.log('CSV convertido para JSON:', json);
+      });
+
+      fetch('/mocks/csv/input_ia.csv')
+      .then((res) => res.text())
+      .then((text) => {
+        const json = csvToJson(text);
+        const filteredData = json.filter((item: any) => item.id_medicamento === id);
+        setInputAI({
+          allDados: filteredData,
+          dadosX: filteredData?.map((item: any) => item.timestamp.split('-').reverse().join('/')),
+          dadosY: filteredData?.map((item: any) => item.quantidade),
+        });
+      });
+  }, []);
+  
+  const csvToJson = (csv: string) => {
+    const [header, ...rows] = csv.split("\n").map(row => row.trim()); // Remove espaços extras
+  
+    return rows.map(row => {
+      const values = row.split(","); // Supondo que seja separado por vírgula
+      return header.split(",").reduce((acc, key, index) => {
+        acc[key] = values[index] || ""; // Garante que valores vazios sejam preenchidos corretamente
+        return acc;
+      }, {} as Record<string, string>);
+    });
+  };
+  
   return (
     <ContainerPage>
       <Inline style={{ display: "flex", alignItems: "stretch" }}>
@@ -51,7 +108,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
           <MedicamentoBody style={{ flex: 1 }}>
             <MedicamentoInfo>
               <MedicamentoHeader>
-                <h2>{nome_medicamento}</h2>
+                <h2>{medicamento?.nome_medicamento}</h2>
               </MedicamentoHeader>
               <NivelEstoque>Nível de estoque</NivelEstoque>
               <Texto>{nivel_estoque.toLocaleString()} caixas (Total)</Texto>
@@ -67,8 +124,8 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
               </ProgressBar>
               <h3>Fornecedores</h3>
               <div>
-                {fornecedores.map((fornecedor, index) => (
-                  <p key={index} style={{ textDecoration: "underline" }}>{fornecedor}</p>
+                {ata.map((fornecedor, index) => (
+                  <p key={index} style={{ textDecoration: "underline" }}>{fornecedor.nome_fornecedor}</p>
                 ))}
               </div>
             </LicitacaoInfo>
@@ -97,10 +154,10 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
 
         <MedicamentoContainer width="100%">
           <Linha height="50px">
-            <Texto marginLeft="0" fontSize="16px" color={theme.colors.branco}>Movimentação do estoque Paracetamol - 12 meses</Texto>
+            <Texto marginLeft="0" fontSize="16px" color={theme.colors.branco}>Movimentação do estoque {medicamento?.nome_medicamento}</Texto>
           </Linha>
           <ContainerBox padding="16px">
-            <GraficoLinha />
+            {inputAI?.dadosX && inputAI?.dadosY && <GraficoLinha dadosX={inputAI?.dadosX} dadosY={inputAI?.dadosY}/>}
           </ContainerBox>
         </MedicamentoContainer> 
 

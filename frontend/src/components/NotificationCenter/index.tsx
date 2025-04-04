@@ -199,7 +199,7 @@ const NotificationCenter: React.FC = () => {
                 {item.description}
               </NotificationText>
               <NotificationText color={theme.colors.cinzaEscuro}>{item.action}</NotificationText>
-              <ViewButton onClick={() => window.location.replace(`/medicamento/${item.id}`)}>Visualizar</ViewButton>
+              <ViewButton onClick={() => window.location.replace(`/medicamento/${item.medicine_id}`)}>Visualizar</ViewButton>
             </NotificationBody>
           </NotificationCard>))}
         </NotificacoesContainer>

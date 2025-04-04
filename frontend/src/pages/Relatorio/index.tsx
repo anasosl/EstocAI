@@ -163,16 +163,6 @@ const PurchaseButton = styled.button`
   }
 `;
 
-// ================== Mock ===================
-const mockData = [
-  { medicamento: "Paracetamol", fornecedor: "Farmácia A", quantidade: 500 },
-  { medicamento: "Ibuprofeno", fornecedor: "Farmácia B", quantidade: 1500 },
-  { medicamento: "Amoxicilina", fornecedor: "Farmácia C", quantidade: 2000 },
-  { medicamento: "Dipirona", fornecedor: "Farmácia D", quantidade: 200 },
-  { medicamento: "Cetirizina", fornecedor: "Farmácia E", quantidade: 100 },
-  { medicamento: "Omeprazol", fornecedor: "Farmácia F", quantidade: 340 },
-];
-
 // ================== Componente Principal ===================
 export const Relatorio: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
