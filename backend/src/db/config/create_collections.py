@@ -25,21 +25,7 @@ def create_collections(database):
 
         for user in USER_COLLECTION_EXAMPLE:
             database.insert_user('users', user)
-
-    if 'medicine' not in database.db.list_collection_names():
-        collections = ['medicine']
-
-        for collection in collections:
-            schema = MedicineSchema()
-            database.create_collection(
-                collection,
-                indexes=[IndexModel([("id", ASCENDING)], unique=True)],
-                validation_schema=schema_serializer(schema.get())
-            )
-
-        for user in MEDICINE_COLLECTION_EXAMPLE:
-            database.insert_user('medicine', user)
-    
+   
     if 'notification' not in database.db.list_collection_names():
         collections = ['notification']
 
@@ -52,6 +38,6 @@ def create_collections(database):
             )
 
         for user in NOTIFICATION_COLLECTION_EXAMPLE:
-            database.insert_user('notification', user)
+            database.insert_notification('notification', user)
     
     
