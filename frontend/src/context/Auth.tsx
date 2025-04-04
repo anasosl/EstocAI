@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: any): JSX.Element => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post(
+      const response: any = await axios.post(
         `${process.env.REACT_APP_API}/login`, 
         { email, password },
         {
@@ -34,11 +34,15 @@ export const AuthProvider = ({ children }: any): JSX.Element => {
           maxRedirects: 0,
         }
       );
-  
+
+      if(response?.status_code !== 200) {
       sessionStorage.setItem('logged', 'true');
-      sessionStorage.setItem("user", JSON.stringify(response.data));
-      setUser(response.data);
+      sessionStorage.setItem("user", JSON.stringify(response.data.data.company.data));
+      setUser(response.data.data.company.data);
       navigate('/home', { state: { logged: true } });
+      } else {
+        alert("Credenciais inválidas.");
+      }
     } catch (error) {
       console.error(error);
       alert("Credenciais inválidas.");

@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import assets from '../../assets'; // Importar a imagem
+import assets from '../../assets';
 import { Box, Button, Inline, PageContainer, StorangeOrangeBackground, StorangeOrangeLogo, Texto, Titulo } from "./style";
 import { InputAdornments } from "../../components";
 import { caracterCustomizado, cepMask, emailMask, phoneMask } from "../../utils/Regex/masks";
-import { Checkbox } from "@mui/material";
+import { Checkbox, FormHelperText } from "@mui/material";
 import { theme } from "../../styles/theme";
 import axios, { AxiosResponse } from "axios";
 import { regexEmail } from "../../utils/Regex/regex";
@@ -24,7 +24,6 @@ type User = {
 
 export const Cadastro: React.FC = () => {
   const [userData, setUserData] = React.useState({} as User);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [errorMessages, setErrorMessages] = React.useState({} as User);
 
   const checkFields = (): boolean => {
@@ -40,6 +39,7 @@ export const Cadastro: React.FC = () => {
       cidade: !cidade || cidade?.length < 3 ? 'Digite a cidade' : '',
       estado: !estado || estado?.length < 2 ? 'Digite o país' : '',
       endereco: !endereco || endereco?.length < 3 ? 'Digite o endereço' : '',
+      termo: !termo ? 'Aceite os termos de privacidade' : ''
     };
     setErrorMessages(errors);
 
@@ -76,6 +76,7 @@ export const Cadastro: React.FC = () => {
       name: userData.nome,
       email: userData.email,
       password: userData.senha,
+      confirmed_password: userData.confirmarSenha,
       address: userData.endereco,
       cep: userData.cep,
       city: userData.cidade,
@@ -85,8 +86,8 @@ export const Cadastro: React.FC = () => {
       alert('Cadastro realizado com sucesso!');
       window.location.replace("/");
     }).catch((err: any) => {
-      console.log(err?.response?.data?.messages[0] || 'Erro ao cadastrar usuário');
-      alert(err?.response?.data?.messages[0] || 'Erro ao cadastrar usuário');
+      console.log(err || 'Erro ao cadastrar usuário');
+      alert(err || 'Erro ao cadastrar usuário');
     });
   };
 
@@ -199,7 +200,9 @@ export const Cadastro: React.FC = () => {
             style={{ color: theme.colors.laranjaPrincipal }}
           />
           <Texto>Eu li e aceito os termos de privacidade</Texto>
+          <FormHelperText error>{errorMessages.termo}</FormHelperText>
         </Inline>
+
         <Button onClick={() => {
           const checked = checkFields();
           if (checked) {

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import assets from '../../assets';
 import {
@@ -12,8 +12,10 @@ import {
 	UserName,
 	UserRole,
   LoginButton,
+  TextoMenu,
 } from './style';
 import { useAuth } from "../../context/Auth";
+import { Popover } from "@mui/material";
 
 // const NavbarContainer = styled.nav`
 //   display: flex;
@@ -64,6 +66,8 @@ import { useAuth } from "../../context/Auth";
 
 const Navbar: FC = () => {
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [open, setOpen] = React.useState(false);
   const { logout, user } = useAuth();
 
   const handleLogin = () => {
@@ -73,6 +77,20 @@ const Navbar: FC = () => {
   const handleLogout = () => {
     logout();
   }
+
+  const handleClick = (event: any) => {
+    setOpen(true);
+    setAnchorEl(event.currentTarget);
+  };  
+
+  const handleClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
+  };
+
+  useEffect(() => {
+    handleClose();
+  }, [user?.id]);
 
   return (
     <NavbarContainer>
@@ -102,8 +120,20 @@ const Navbar: FC = () => {
         <UserContainer>
           {user?.id && sessionStorage.getItem('logged') === 'true' ? (
             <>
-              <UserImage src={assets.Fabiana} alt='User Image' onClick={handleLogout}/>
-              <UserInfo>
+              <UserImage src={assets.Fabiana} alt='User Image' onClick={(event) => handleClick(event)}/>
+              <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                style={{ marginTop: 20 }}
+              >
+                <TextoMenu style={{ padding: '1rem', cursor: "pointer" }} onClick={handleLogout}>Sair</TextoMenu>
+              </Popover>
+              <UserInfo style={{ cursor: "pointer" }} onClick={(event) => handleClick(event)}>
                 <UserName>{user?.name}</UserName>
                 <UserRole>Gerente</UserRole>
               </UserInfo>
