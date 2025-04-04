@@ -6,7 +6,6 @@ from passlib.context import CryptContext
 from src.schemas.login import UserLogin
 from src.service.impl.user_service import UserService
 from src.schemas.response import HTTPResponses, HttpResponseModel
-from src.utils.auth import create_jwt_token, get_current_user
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -37,13 +36,12 @@ async def login(login: UserLogin):
             status_code=HTTPResponses.INVALID_CREDENTIALS().status_code,
         )
     token_data = {"sub": company.data['name']}
-    token = create_jwt_token(data=token_data)
     return HttpResponseModel(
         message="Login successful",
         status_code=status.HTTP_200_OK,
-        data={"access_token": token, "token_type": "bearer"}
+        data={"access_token": token_data, "token_type": "bearer", "company": company},
     )
 
 @router.get("/protected")
-async def protected_route(current_user: dict = Depends(get_current_user)):
+async def protected_route(current_user):
     return {"message": f"Hello {current_user['sub']}! You are authenticated."}

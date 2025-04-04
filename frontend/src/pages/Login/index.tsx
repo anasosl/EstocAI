@@ -1,5 +1,6 @@
-import React from "react";
-import assets from '../../assets'; // Importar a imagem
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
+import assets from '../../assets';
 import { BackgroundImage, StorangeOrangeBackground, PageContainer, 
   StorangeOrangeLogo, Texto, Box, Titulo, Inline, Button } from './style';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { InputAdornments } from "../../components";
 import { regexEmail } from "../../utils/Regex/regex";
 import { caracterCustomizado, emailMask } from "../../utils/Regex/masks";
 import { Checkbox } from "@mui/material";
+import { useAuth } from "../../context/Auth";
 
 type User = {
   email: string;
@@ -16,8 +18,13 @@ type User = {
 }
 
 export const Login: React.FC = () => {
-    const [userData, setUserData] = React.useState({} as User);
+    const [userData, setUserData] = React.useState({
+      email: '',
+      senha: '',
+      lembrar: false,
+    } as User);
     const [errorMessages, setErrorMessages] = React.useState({} as User);
+    const { login } = useAuth();
   
     const checkFields = (): boolean => {
       const { email, senha } = userData;
@@ -41,13 +48,29 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   
   const handleLogin = () => {
-    sessionStorage.setItem('logged', 'true');
-    navigate('/home', { state: { logged: true } });
+    login(userData.email, userData.senha);
   }
 
   const handleSignUp = () => {
-	navigate('/cadastro', { state: { logged: false } });
+	  navigate('/cadastro', { state: { logged: false } });
   }
+
+  const lembrete = (lembrar: boolean) => {
+    if (lembrar && userData.email && userData.senha) {
+      localStorage.setItem("lembrete_login", `{ "email": "${userData.email}", "senha": "${userData.senha}" }`);
+    } else {
+      localStorage.removeItem("lembrete_login");
+    }
+  };
+
+  useEffect(() => {
+    const lembrete = localStorage.getItem("lembrete_login");
+    if (lembrete) {
+      const { email, senha } = JSON.parse(lembrete);
+      setUserData({ ...userData, email, senha, lembrar: true });
+    }
+  }, []);
+  
   return (
     <PageContainer>
       <Box>
@@ -86,7 +109,11 @@ export const Login: React.FC = () => {
             <Inline $flexDirection="row">
               <Checkbox
                 checked={userData.lembrar}
-                onChange={(e) => setUserData({ ...userData, lembrar: !userData.lembrar })}
+                onChange={(e) => {
+                  const newValue = e.target.checked;
+                  setUserData({ ...userData, lembrar: newValue });
+                  lembrete(newValue);
+                }}
                 style={{ color: theme.colors.laranjaPrincipal }}
               />
               <Texto>Lembre-se de mim</Texto>

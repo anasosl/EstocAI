@@ -44,6 +44,20 @@ export const NavLink = styled.a`
 		cursor: pointer;
 	}
 `;
+
+export const TextoMenu = styled.p`
+	color: ${theme.colors.laranjaPrincipal};
+	text-decoration: none;
+	margin: 0 30px;
+	font-size: 18px;
+	transition: color 0.3s;
+
+	&:hover {
+		color: #ddd;
+		cursor: pointer;
+	}
+`;
+
 export const Profile = styled.div`
   display: flex;
   align-items: center;
