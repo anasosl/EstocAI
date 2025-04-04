@@ -95,14 +95,14 @@ const Navbar: FC = () => {
   return (
     <NavbarContainer>
       <Logo src={assets.storangeWhiteLogo} onClick={() => {
-        if(sessionStorage.getItem('logged') === 'true') {
+        if(localStorage.getItem('logged') === 'true') {
           navigate('/home', { state: { logged: true } });
         } else {
           navigate('/Login', { state: { logged: false } });
         }
       }}/>
       <NavLinks>
-        {user?.id && sessionStorage.getItem('logged') === 'true' ? (
+        {user?.id && localStorage.getItem('logged') === 'true' ? (
           <>
             <NavLink>Pesquisa por Medicamento</NavLink>
             <NavLink onClick={() => window.location.replace('/relatorio')}>Relatório Inteligente</NavLink>
@@ -118,7 +118,7 @@ const Navbar: FC = () => {
           <span>Fabiana</span>
         </Profile> */}
         <UserContainer>
-          {user?.id && sessionStorage.getItem('logged') === 'true' ? (
+          {user?.id && localStorage.getItem('logged') === 'true' ? (
             <>
               <UserImage src={assets.Fabiana} alt='User Image' onClick={(event) => handleClick(event)}/>
               <Popover
