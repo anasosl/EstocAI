@@ -10,3 +10,7 @@ httpx
 bcrypt
 passlib
 jwt
+pandas
+numpy
+scipy
+scikit-learn

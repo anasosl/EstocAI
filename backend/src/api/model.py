@@ -5,7 +5,7 @@ from src.service.impl.model_service import ModelService
 router = APIRouter()
 
 @router.get(
-    "/prediction/{name}",
+    "/prediction/{id}",
     response_model=HttpResponseModel,
     status_code=status.HTTP_200_OK,
     description="Get model predictions",
@@ -17,21 +17,21 @@ router = APIRouter()
         }
     },
 )
-def get_prediction(name: str) -> HttpResponseModel:
+def get_prediction(id: str) -> HttpResponseModel:
     """
     Get model predictions
 
     Parameters:
-    - name: The name of the model to get predictions from
+    - id: The id of the model to get predictions from
 
     Returns:
     - The prediction from the model
 
     """
-    return ModelService.get_prediction(name)
+    return ModelService.get_prediction(id)
 
 @router.get(
-    "/report/{name}",
+    "/report/{id}",
     response_model=HttpResponseModel,
     status_code=status.HTTP_200_OK,
     description="Get model report",
@@ -43,15 +43,15 @@ def get_prediction(name: str) -> HttpResponseModel:
         }
     },
 )
-def get_report(name: str) -> HttpResponseModel:
+def get_report(id: str) -> HttpResponseModel:
     """
     Get model report
 
     Parameters:
-    - name: The name of the model to get a report from
+    - id: The id of the model to get a report from
 
     Returns:
     - The report from the model
 
     """
-    return ModelService.get_report(name)
+    return ModelService.get_report(id)
