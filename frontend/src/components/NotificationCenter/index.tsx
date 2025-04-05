@@ -121,20 +121,20 @@ const NotificationCenter: React.FC = () => {
     if (active === "todas"){
       return notifications?.filter(e => e.type);
     } else if (active === "crítico"){
-      return notifications?.filter(e => e.type === "ESTOQUE CRÍTICO");
-    } else if (active === "atenção"){
-      return notifications?.filter(e => e.type === "ATENÇÃO");
-    } else if (active === "cuidado"){
-      return notifications?.filter(e => e.type === "CUIDADO");
+      return notifications?.filter(e => e.type === "Crítico");
+    } else if (active === "validade"){
+      return notifications?.filter(e => e.type === "Validade");
+    } else if (active === "excesso"){
+      return notifications?.filter(e => e.type === "Excesso");
     } return notifications;
   };
 
   const colorTipo = (tipo: any) => {
-    if (tipo === "ESTOQUE CRÍTICO") {
+    if (tipo === "Crítico") {
       return theme.colors.vermelho;
-    } else if (tipo === "ATENÇÃO") {
+    } else if (tipo === "Validade") {
       return theme.colors.preto423C2C;
-    } else if (tipo === "CUIDADO") {
+    } else if (tipo === "Excesso") {
       return theme.colors.azul;
     }
   }
@@ -162,7 +162,7 @@ const NotificationCenter: React.FC = () => {
     <NotificationsContainer>
       <FilterButtons>
         <TextBold>Notificações</TextBold>
-        {["todas", "crítico", "atenção", "cuidado"].map((key) => (
+        {["todas", "crítico", "validade", "excesso"].map((key) => (
       <FilterButton 
         key={key} 
         active={active === key} 
