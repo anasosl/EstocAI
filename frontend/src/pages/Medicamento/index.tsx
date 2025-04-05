@@ -161,14 +161,14 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
           </ContainerBox>
         </MedicamentoContainer> 
 
-        <MedicamentoContainer width="100%">
+        {/* <MedicamentoContainer width="100%">
           <Linha height="50px">
             <Texto marginLeft="0" fontSize="16px" color={theme.colors.branco}>Visualização do estoque por satélite</Texto>
           </Linha>
           <ContainerBox padding="16px">
             <GraficoBarra />
           </ContainerBox>
-        </MedicamentoContainer> 
+        </MedicamentoContainer>  */}
     </ContainerPage>
   );
 };
