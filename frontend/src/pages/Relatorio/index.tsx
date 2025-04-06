@@ -54,9 +54,10 @@ const ReportCard = styled.div`
   border-radius: 12px;
   width: 28%;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border-top: 5px solid ${theme.colors.laranjaPrincipal};
+  border-top: 20px solid ${theme.colors.laranjaPrincipal};
   display: flex;
   flex-direction: column;
+   max-height: 65vh;
   gap: 1rem;
 
   overflow-y: auto;

@@ -53,7 +53,7 @@ export const MedicamentoContainer = styled.div<Props>`
 export const MedicamentoHeader = styled.div`
   background-color:${theme.colors.laranjaPrincipal};
   color: #fff;
-  padding: 8px 0px 8px 0px;
+  padding: 8px 0px 8px 20px;
   border-top-left-radius: 15px;
   border-bottom-right-radius: 15px;
   width: 80%;
