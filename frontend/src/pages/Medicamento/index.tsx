@@ -26,11 +26,12 @@ import {
   ReportHeader,
   BulletList,
   BulletItem,
-  
+
 } from './style';
 import { theme } from '../../styles/theme';
 import { GraficoBarra, GraficoLinha, MedicamentoType, LicitacaoStatus } from '../../components';
 import { useParams } from 'react-router-dom';
+import axios from "axios";
 
 interface MedicamentoPageProps {
   nome_medicamento?: string;
@@ -59,16 +60,17 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
   const { id } = useParams<{ id: string }>();
   const [nivelEstoque, setNivelEstoque] = useState<number>(21726);
   const [licitacoes, setLicitacoes] = useState<any[]>([]);
+  const [report, setReport] = useState<string>("");
   const months = -40;
 
   useEffect(() => {
     fetch('/mocks/csv/medicamentos.csv')
-    .then((res) => res.text())
-    .then((text) => {
-      const json = csvToJson(text);
-      setMedicamento(json.find((item: any) => item.id_medicamento === id));
-      console.log('CSV convertido para JSON:', json);
-    });
+      .then((res) => res.text())
+      .then((text) => {
+        const json = csvToJson(text);
+        setMedicamento(json.find((item: any) => item.id_medicamento === id));
+        console.log('CSV convertido para JSON:', json);
+      });
 
     fetch('/mocks/csv/empenhos.csv')
       .then((res) => res.text())
@@ -78,7 +80,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
         console.log('CSV convertido para JSON:', json);
       });
 
-      fetch('/mocks/csv/atas_registro_precos.csv')
+    fetch('/mocks/csv/atas_registro_precos.csv')
       .then((res) => res.text())
       .then((text) => {
         const json = csvToJson(text);
@@ -86,7 +88,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
         console.log('CSV convertido para JSON:', json);
       });
 
-      fetch('/mocks/csv/input_ia.csv')
+    fetch('/mocks/csv/input_ia.csv')
       .then((res) => res.text())
       .then((text) => {
         const json = csvToJson(text);
@@ -117,10 +119,10 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
         ])
       });
   }, []);
-  
+
   const csvToJson = (csv: string) => {
     const [header, ...rows] = csv.split("\n").map(row => row.trim()); // Remove espaços extras
-  
+
     return rows.map(row => {
       const values = row.split(","); // Supondo que seja separado por vírgula
       return header.split(",").reduce((acc, key, index) => {
@@ -129,7 +131,23 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
       }, {} as Record<string, string>);
     });
   };
-  
+
+  const fetchReport = async (name: string) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API}/model/report/${name}`);
+      const reportText = response.data.data.result;
+      setReport(reportText as string);
+    } catch (error) {
+      console.error("Erro ao buscar os dados:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (medicamento?.nome_medicamento) {
+      fetchReport(medicamento.nome_medicamento);
+    }
+  }, [medicamento]);
+
   return (
     <ContainerPage>
       <Inline style={{ display: "flex", alignItems: "stretch" }}>
@@ -141,7 +159,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
               </MedicamentoHeader>
               <NivelEstoque>Nível de estoque</NivelEstoque>
               <Texto>{nivelEstoque.toLocaleString()} caixas (Total)</Texto>
-              <MedicamentoType type={medicamento?.tipo}/>
+              <MedicamentoType type={medicamento?.tipo} />
             </MedicamentoInfo>
           </MedicamentoBody>
         </MedicamentoContainer>
@@ -153,7 +171,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
                 <h2>Status das licitações</h2>
               </MedicamentoHeader>
               <LicitacaoStatus
-                licitacoes={licitacoes}/>
+                licitacoes={licitacoes} />
             </MedicamentoInfo>
           </MedicamentoBody>
         </MedicamentoContainer>
@@ -164,28 +182,14 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
             <ReportHeader>
               ✨ Com base nos dados analisados nos últimos meses, observamos:
             </ReportHeader>
-            <BulletList>
-              <BulletItem>
-                <strong>Alta Demanda:</strong> O uso de Paracetamol e Dipirona
-                aumentou em 18%, refletindo um crescimento nos atendimentos de
-                síndromes gripais.
-              </BulletItem>
-              <BulletItem>
-                <strong>Estoque Crítico:</strong> Medicamentos antibióticos, como
-                Amoxicilina e Azitromicina, estão com níveis reduzidos, exigindo
-                reposição em até 15 dias para evitar desabastecimento.
-              </BulletItem>
-              <BulletItem>
-                <strong>Redução no Consumo:</strong> Anti-hipertensivos como
-                Losartana tiveram uma queda de 12%, possivelmente devido a
-                mudanças nos protocolos de prescrição.
-              </BulletItem>
-              <BulletItem>
-                <strong>Picos Sazonais:</strong> O consumo de antialérgicos subiu
-                25% devido ao aumento de casos relacionados à polinização sazonal
-                e mudanças climáticas.
-              </BulletItem>
-            </BulletList>
+            {report ? (
+              <div
+                style={{ whiteSpace: "pre-line" }}
+                dangerouslySetInnerHTML={{ __html: report }} // Agora tratando como string
+              />
+            ) : (
+              <p>Carregando relatório...</p>
+            )}
           </RelatorioBox>
         </MedicamentoContainer>
       </Inline>
@@ -196,16 +200,16 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
             <Texto marginLeft="0" fontSize="16px" color={theme.colors.branco}>Movimentação do estoque {medicamento?.nome_medicamento}</Texto>
           </Linha>
           <ContainerBox padding="16px">
-            {inputAI?.dadosX && inputAI?.dadosY && <GraficoLinha dadosX={inputAI?.dadosX.slice(months)} dadosY={inputAI?.dadosY.slice(months)}/>}
+            {inputAI?.dadosX && inputAI?.dadosY && <GraficoLinha dadosX={inputAI?.dadosX.slice(months)} dadosY={inputAI?.dadosY.slice(months)} />}
           </ContainerBox>
-        </MedicamentoContainer> 
+        </MedicamentoContainer>
 
         <MedicamentoContainer width="100%">
           <Linha height="50px">
             <Texto marginLeft="0" fontSize="16px" color={theme.colors.branco}>Visualização do estoque por satélite</Texto>
           </Linha>
           <ContainerBox padding="16px">
-            <GraficoBarra totalEstoque={nivelEstoque}/>
+            <GraficoBarra totalEstoque={nivelEstoque} />
           </ContainerBox>
         </MedicamentoContainer>
       </Inline>

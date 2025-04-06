@@ -4,6 +4,7 @@ import { theme } from "../../styles/theme";
 import { saveAs } from "file-saver";
 import IconEditar from "../../assets/IconEditar.svg";
 import IconSalvar from "../../assets/IconSalvar.svg";
+import axios from "axios";
 
 type Props = {
   $borderRadius?: string;
@@ -184,6 +185,9 @@ const PurchaseButton = styled.button`
 export const Relatorio: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const [ata, setAta] = useState<any[]>([]);
+  const [tableData, setTableData] = useState<any[]>([]);
+  const [report, setReport] = useState<string>("");
+  const [columnKeys, setColumnKeys] = useState<string[]>([]);
 
   // Exporta a tabela para CSV usando file-saver
   const handleExportCSV = () => {
@@ -213,9 +217,43 @@ export const Relatorio: React.FC = () => {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      await axios
+        .get(`${process.env.REACT_APP_API}/model/prediction`)
+        .then((response) => {
+          const data = response.data.data.result;
+          setTableData(data);
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar os dados:", error);
+        });
+    } catch (error) {
+      console.error("Erro ao buscar os dados:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchReport = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API}/model/report`);
+      const reportText = response.data.data.result;
+      setReport(reportText as string);
+    } catch (error) {
+      console.error("Erro ao buscar os dados:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchReport();
+  }, []);
+
   useEffect(() => {
     let medicamentosData: any[] = [];
-  
+
     fetch('/mocks/csv/medicamentos.csv')
       .then((res) => res.text())
       .then((text) => {
@@ -226,7 +264,7 @@ export const Relatorio: React.FC = () => {
       .then((res) => res.text())
       .then((text) => {
         const ataData = csvToJson(text);
-  
+
         const ataComMedicamentos = ataData.map((ataItem: any) => {
           const medicamento = medicamentosData.find(
             (med) => med.id_medicamento === ataItem.id_medicamento
@@ -236,16 +274,16 @@ export const Relatorio: React.FC = () => {
             ...medicamento,
           };
         });
-  
+
         setAta(ataComMedicamentos);
         console.log('Ata com dados do medicamento:', ataComMedicamentos);
       });
   }, []);
-  
-  
+
+
   const csvToJson = (csv: string) => {
     const [header, ...rows] = csv.split("\n").map(row => row.trim()); // Remove espaços extras
-  
+
     return rows.map(row => {
       const values = row.split(","); // Supondo que seja separado por vírgula
       return header.split(",").reduce((acc, key, index) => {
@@ -265,18 +303,31 @@ export const Relatorio: React.FC = () => {
           <Table>
             <thead>
               <tr>
-                <Th $borderRadius="6px 0 0 0">Medicamento</Th>
-                <Th>Fornecedor</Th>
-                <Th>Quantidade (caixas)</Th>
+                <Th $borderRadius="6px 0 0 0">Nome</Th>
+                <Th>Taxa média de consumo</Th>
+                <Th>Custo do Lote</Th>
+                <Th>Consumo médio último mês</Th>
+                <Th>Data ótima para compra</Th>
+                <Th>Quantidade a pedir</Th>
+                <Th>Total Consumido</Th>
+                <Th>Aquisição</Th>
+                <Th>Tipo</Th>
                 <Th $borderRadius="0 6px 0 0">Ações</Th>
               </tr>
             </thead>
             <tbody>
-              {ata.map((item, index) => (
+              {Array.isArray(tableData) && tableData.map((item, index) => (
+                console.log(item),
                 <tr key={index}>
                   <Td>{item.nome_medicamento}</Td>
-                  <Td>{item.nome_fornecedor}</Td>
-                  <Td>{item.quantidade_maxima}</Td>
+                  <Td>{item.avg_consumption_rate.toFixed(1)}</Td>
+                  <Td>{item.cost_of_lot.toFixed(1)}</Td>
+                  <Td>{item.last_month_avg_consumption.toFixed(1)}</Td>
+                  <Td>{item.optimal_order_date}</Td>
+                  <Td>{item.order_quantity.toFixed(0)}</Td>
+                  <Td>{item.percentage_consumed.toFixed(2)}</Td>
+                  <Td>{item.procurement_mode}</Td>
+                  <Td>{item.tipo}</Td>
                   <Td>
                     <IconButton onClick={() => handleEdit(index)}>
                       <img src={IconEditar} alt="Icone de editar" />
@@ -302,28 +353,14 @@ export const Relatorio: React.FC = () => {
           <ReportHeader>
             ✨ Com base nos dados analisados nos últimos meses, observamos:
           </ReportHeader>
-          <BulletList>
-            <BulletItem>
-              <strong>Alta Demanda:</strong> O uso de Paracetamol e Dipirona
-              aumentou em 18%, refletindo um crescimento nos atendimentos de
-              síndromes gripais.
-            </BulletItem>
-            <BulletItem>
-              <strong>Estoque Crítico:</strong> Medicamentos antibióticos, como
-              Amoxicilina e Azitromicina, estão com níveis reduzidos, exigindo
-              reposição em até 15 dias para evitar desabastecimento.
-            </BulletItem>
-            <BulletItem>
-              <strong>Redução no Consumo:</strong> Anti-hipertensivos como
-              Losartana tiveram uma queda de 12%, possivelmente devido a
-              mudanças nos protocolos de prescrição.
-            </BulletItem>
-            <BulletItem>
-              <strong>Picos Sazonais:</strong> O consumo de antialérgicos subiu
-              25% devido ao aumento de casos relacionados à polinização sazonal
-              e mudanças climáticas.
-            </BulletItem>
-          </BulletList>
+          {report ? (
+              <div
+                style={{ whiteSpace: "pre-line" }}
+                dangerouslySetInnerHTML={{ __html: report }} // Agora tratando como string
+              />
+            ) : (
+              <p>Carregando relatório...</p>
+            )}
         </ReportCard>
       </ContentWrapper>
     </PageContainer>
