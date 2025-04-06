@@ -50,6 +50,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
   const [medicamento, setMedicamento] = useState<any>();
   const [inputAI, setInputAI] = useState<any>();
   const { id } = useParams<{ id: string }>();
+  const [nivelEstoque, setNivelEstoque] = useState<number>(21726);
 
   useEffect(() => {
     fetch('/mocks/csv/medicamentos.csv')
@@ -86,6 +87,14 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
           dadosX: filteredData?.map((item: any) => item.timestamp.split('-').reverse().join('/')),
           dadosY: filteredData?.map((item: any) => item.quantidade),
         });
+
+        if (filteredData.length > 0) {
+          const ultimoItem = filteredData[filteredData.length - 1];
+          const quantidade = parseInt(ultimoItem.quantidade, 10);
+          if (!isNaN(quantidade)) {
+            setNivelEstoque(quantidade);
+          }
+        }
       });
   }, []);
   
@@ -111,7 +120,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
                 <h2>{medicamento?.nome_medicamento}</h2>
               </MedicamentoHeader>
               <NivelEstoque>Nível de estoque</NivelEstoque>
-              <Texto>{nivel_estoque.toLocaleString()} caixas (Total)</Texto>
+              <Texto>{nivelEstoque.toLocaleString()} caixas (Total)</Texto>
               <ButtonContainer>
                 <SatelliteButton>Visualizar por satélite</SatelliteButton>
               </ButtonContainer>
@@ -161,14 +170,14 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
           </ContainerBox>
         </MedicamentoContainer> 
 
-        {/* <MedicamentoContainer width="100%">
+        <MedicamentoContainer width="100%">
           <Linha height="50px">
             <Texto marginLeft="0" fontSize="16px" color={theme.colors.branco}>Visualização do estoque por satélite</Texto>
           </Linha>
           <ContainerBox padding="16px">
-            <GraficoBarra />
+            <GraficoBarra totalEstoque={nivelEstoque}/>
           </ContainerBox>
-        </MedicamentoContainer>  */}
+        </MedicamentoContainer>
     </ContainerPage>
   );
 };
