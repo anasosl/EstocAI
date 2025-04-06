@@ -133,7 +133,7 @@ export const Home: React.FC = () => {
           <TextField
             {...params}
             fullWidth
-            placeholder="Busque nas notificações"
+            placeholder="Procure por um medicamento"
             variant="outlined"
             sx={{ width: "100%", borderRadius: 4, backgroundColor: theme.colors.branco }}
             InputProps={{
