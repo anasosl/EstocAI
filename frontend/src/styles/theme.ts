@@ -14,6 +14,8 @@ export const theme = {
 		azul: '#1F1F67',
 		azul373799: '#373799',
 		verde: '#3C9472',
+		verdeSuave: '#52BD94',
+		laranjaSuave: '#F3BC71',
 	},
 	fonts: {
 		abeezee: '"ABeeZee", sans-serif',

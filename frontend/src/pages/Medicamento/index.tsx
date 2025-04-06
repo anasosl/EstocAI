@@ -22,7 +22,7 @@ import {
   LinhaGradiente,
 } from './style';
 import { theme } from '../../styles/theme';
-import { GraficoBarra, GraficoLinha } from '../../components';
+import { GraficoBarra, GraficoLinha, MedicamentoType } from '../../components';
 import { useParams } from 'react-router-dom';
 
 interface MedicamentoPageProps {
@@ -113,7 +113,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
   return (
     <ContainerPage>
       <Inline style={{ display: "flex", alignItems: "stretch" }}>
-        <MedicamentoContainer width="60%" style={{ display: "flex", flexDirection: "column" }}>
+        <MedicamentoContainer width="30%" style={{ display: "flex", flexDirection: "column" }}>
           <MedicamentoBody style={{ flex: 1 }}>
             <MedicamentoInfo>
               <MedicamentoHeader>
@@ -121,23 +121,20 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
               </MedicamentoHeader>
               <NivelEstoque>Nível de estoque</NivelEstoque>
               <Texto>{nivelEstoque.toLocaleString()} caixas (Total)</Texto>
-              <ButtonContainer>
-                <SatelliteButton>Visualizar por satélite</SatelliteButton>
-              </ButtonContainer>
+              <MedicamentoType type={medicamento?.tipo}/>
             </MedicamentoInfo>
-            <LicitacaoInfo>
-              <StatusLicitacao>Status da licitação</StatusLicitacao>
-              <PercentualLicitacao>{(status_licitacao * 100).toFixed(0)}% das caixas já foram solicitadas</PercentualLicitacao>
-              <ProgressBar>
-                <Progress style={{ width: `${status_licitacao * 100}%` }} />
-              </ProgressBar>
-              <h3>Fornecedores</h3>
-              <div>
-                {ata.map((fornecedor, index) => (
-                  <p key={index} style={{ textDecoration: "underline" }}>{fornecedor.nome_fornecedor}</p>
-                ))}
-              </div>
-            </LicitacaoInfo>
+          </MedicamentoBody>
+        </MedicamentoContainer>
+
+        <MedicamentoContainer width="30%" style={{ display: "flex", flexDirection: "column" }}>
+          <MedicamentoBody style={{ flex: 1 }}>
+            <MedicamentoInfo>
+              <MedicamentoHeader>
+                <h2>Status das licitações</h2>
+              </MedicamentoHeader>
+              
+              
+            </MedicamentoInfo>
           </MedicamentoBody>
         </MedicamentoContainer>
 
