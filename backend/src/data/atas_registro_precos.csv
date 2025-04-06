@@ -1,0 +1,4 @@
+id,id_medicamento,especificacao,nome_fornecedor,cnpj,unidade,quantidade_maxima,quantidade_minima,valor_unitario,data_abertura,prazo
+1,1,Medicamento genérico de alta qualidade,Fornecedor 1,87.759.561/3470-70,gramas,15000,10000,8.34,2022-01-29T19:29:59.569062,2025-11-03T19:29:59.569078
+2,2,Medicamento genérico de alta qualidade,Fornecedor 2,57.349.317/9518-79,comprimidos,10000,4000,29.06,2021-06-09T19:29:59.569097,2025-07-08T19:29:59.569100
+3,3,Medicamento genérico de alta qualidade,Fornecedor 3,73.968.322/8743-21,caixa,5000,2500,82.78,2021-05-14T19:29:59.569113,2025-07-15T19:29:59.569115
