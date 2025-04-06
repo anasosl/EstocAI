@@ -88,31 +88,53 @@ const Column = styled.div`
   }
 `;
 
+const csvToJson = (csv: string) => {
+  const [header, ...rows] = csv
+    .split("\n")
+    .map(row => row.trim())
+    .filter(row => row);
+  return rows.map(row => {
+    const values = row.split(",");
+    return header.split(",").reduce((acc, key, index) => {
+      acc[key] = values[index] || "";
+      return acc;
+    }, {} as Record<string, string>);
+  });
+};
+
 export const Home: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [allMedicamentos, setAllMedicamentos] = useState<any[]>([]);
   const [suggestions, setSuggestions] = useState<any[]>([]);
 
   useEffect(() => {
+    const fetchCSV = async () => {
+      try {
+        const response = await fetch('/mocks/csv/medicamentos.csv');
+        const csvText = await response.text();
+        const jsonData = csvToJson(csvText);
+        setAllMedicamentos(jsonData);
+        console.log("dados:", jsonData)
+      } catch (error) {
+        console.error("Erro ao carregar CSV:", error);
+      }
+    };
+    fetchCSV();
+  }, []);
+
+  useEffect(() => {
     if (searchTerm.length > 0) {
-      const fetchSuggestions = async () => {
-        try {
-          const response = await axios.get(`${process.env.REACT_APP_API}/medicine`, {
-            params: { search: searchTerm },
-          });
-          console.log("Resposta:", response);
-          const data = response.data.data;
-          setSuggestions(Array.isArray(data) ? data : []);
-        } catch (error) {
-          console.error("Erro ao buscar sugestões:", error);
-          setSuggestions([]);
-        }
-      };
-      fetchSuggestions();
+      const filtered = allMedicamentos.filter((medicamento) =>
+        medicamento.nome_medicamento
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+      setSuggestions(filtered);
     } else {
       setSuggestions([]);
     }
-  }, [searchTerm]);
-
+  }, [searchTerm, allMedicamentos]);
+  
   return (
     <PageContainer>
       <Title>Veja as tendências de estoque para um medicamento</Title>
@@ -120,13 +142,13 @@ export const Home: React.FC = () => {
         freeSolo
         popupIcon={null}
         options={suggestions}
-        getOptionLabel={(option) => option.name || ""}
+        getOptionLabel={(option) => option.nome_medicamento || ""}
         inputValue={searchTerm}
         sx={{ width: "80%"}}
         onInputChange={(event, newInputValue) => setSearchTerm(newInputValue)}
         onChange={(event, value) => {
-          if (value && value.name) {
-            window.location.href = `/medicamento/${value.id}`;
+          if (value && value.nome_medicamento) {
+            window.location.href = `/medicamento/${value.id_medicamento}`;
           }
         }}
         renderInput={(params) => (
