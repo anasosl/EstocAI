@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { saveAs } from "file-saver";
@@ -57,6 +57,23 @@ const ReportCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.cinza};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.cinzaEscuro};
+    border-radius: 4px;
+  }
 
   @media screen and (max-width: 1024px) {
     width: 100%;
@@ -163,19 +180,10 @@ const PurchaseButton = styled.button`
   }
 `;
 
-// ================== Mock ===================
-const mockData = [
-  { medicamento: "Paracetamol", fornecedor: "Farmácia A", quantidade: 500 },
-  { medicamento: "Ibuprofeno", fornecedor: "Farmácia B", quantidade: 1500 },
-  { medicamento: "Amoxicilina", fornecedor: "Farmácia C", quantidade: 2000 },
-  { medicamento: "Dipirona", fornecedor: "Farmácia D", quantidade: 200 },
-  { medicamento: "Cetirizina", fornecedor: "Farmácia E", quantidade: 100 },
-  { medicamento: "Omeprazol", fornecedor: "Farmácia F", quantidade: 340 },
-];
-
 // ================== Componente Principal ===================
 export const Relatorio: React.FC = () => {
-  const [data, setData] = useState(mockData);
+  const [data, setData] = useState<any[]>([]);
+  const [ata, setAta] = useState<any[]>([]);
 
   // Exporta a tabela para CSV usando file-saver
   const handleExportCSV = () => {
@@ -205,6 +213,48 @@ export const Relatorio: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    let medicamentosData: any[] = [];
+  
+    fetch('/mocks/csv/medicamentos.csv')
+      .then((res) => res.text())
+      .then((text) => {
+        medicamentosData = csvToJson(text);
+        console.log('Medicamentos:', medicamentosData);
+        return fetch('/mocks/csv/atas_registro_precos.csv');
+      })
+      .then((res) => res.text())
+      .then((text) => {
+        const ataData = csvToJson(text);
+  
+        const ataComMedicamentos = ataData.map((ataItem: any) => {
+          const medicamento = medicamentosData.find(
+            (med) => med.id_medicamento === ataItem.id_medicamento
+          );
+          return {
+            ...ataItem,
+            ...medicamento,
+          };
+        });
+  
+        setAta(ataComMedicamentos);
+        console.log('Ata com dados do medicamento:', ataComMedicamentos);
+      });
+  }, []);
+  
+  
+  const csvToJson = (csv: string) => {
+    const [header, ...rows] = csv.split("\n").map(row => row.trim()); // Remove espaços extras
+  
+    return rows.map(row => {
+      const values = row.split(","); // Supondo que seja separado por vírgula
+      return header.split(",").reduce((acc, key, index) => {
+        acc[key] = values[index] || ""; // Garante que valores vazios sejam preenchidos corretamente
+        return acc;
+      }, {} as Record<string, string>);
+    });
+  };
+
   return (
     <PageContainer>
       <Title>Sugestão de Compra</Title>
@@ -222,11 +272,11 @@ export const Relatorio: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {ata.map((item, index) => (
                 <tr key={index}>
-                  <Td>{item.medicamento}</Td>
-                  <Td>{item.fornecedor}</Td>
-                  <Td>{item.quantidade}</Td>
+                  <Td>{item.nome_medicamento}</Td>
+                  <Td>{item.nome_fornecedor}</Td>
+                  <Td>{item.quantidade_maxima}</Td>
                   <Td>
                     <IconButton onClick={() => handleEdit(index)}>
                       <img src={IconEditar} alt="Icone de editar" />
@@ -250,8 +300,7 @@ export const Relatorio: React.FC = () => {
         {/** Card lateral de tendências recentes (bullet points) */}
         <ReportCard>
           <ReportHeader>
-            ✨ Com base nos dados analisados nos últimos três meses, observamos
-            algumas tendências:
+            ✨ Com base nos dados analisados nos últimos meses, observamos:
           </ReportHeader>
           <BulletList>
             <BulletItem>

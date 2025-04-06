@@ -37,7 +37,7 @@ export const Cadastro: React.FC = () => {
       confirmarSenha: (senha !== confirmarSenha) ? 'As senhas devem ser iguais.' : '',
       cep: !cep || cep.length < 9 ? 'Digite o CEP' : '',
       cidade: !cidade || cidade?.length < 3 ? 'Digite a cidade' : '',
-      estado: !estado || estado?.length < 2 ? 'Digite o país' : '',
+      estado: !estado || estado?.length < 2 ? 'Digite o estado' : '',
       endereco: !endereco || endereco?.length < 3 ? 'Digite o endereço' : '',
       termo: !termo ? 'Aceite os termos de privacidade' : ''
     };

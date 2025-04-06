@@ -1,0 +1,4 @@
+id_medicamento,nome_medicamento,descricao,tipo
+1,Medicamento 1,Descrição do medicamento genérico.,Critical
+2,Medicamento 2,Descrição do medicamento genérico.,Critical
+3,Medicamento 3,Descrição do medicamento genérico.,Not-Critical

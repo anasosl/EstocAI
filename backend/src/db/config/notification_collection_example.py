@@ -1,20 +1,23 @@
 NOTIFICATION_COLLECTION_EXAMPLE = [
     {
-        "medicine_name": "Amoxicilina",
-        "type": "ESTOQUE CRÍTICO",
-        "description": "Estoque de Amoxilina crítico: 17 dias até o fim de estoque",
+        "medicine_id": 1,
+        "medicine_name": "Medicamento 1",
+        "type": "Crítico",
+        "description": "Descrição do medicamento genérico.",
         "action": "É necessário uma ação urgente."
     },
     {
-        "medicine_name": "Amoxicilina",
-        "type": "ATENÇÃO",
-        "description": "Estoque de Amoxilina crítico: 17 dias até o fim de estoque",
+        "medicine_id": 2,
+        "medicine_name": "Medicamento 2",
+        "type": "Crítico",
+        "description": "Descrição do medicamento genérico.",
         "action": "É necessário uma ação urgente."
     },
     {
-        "medicine_name": "Amoxicilina",
-        "type": "CUIDADO",
-        "description": "Estoque de Amoxilina crítico: 17 dias até o fim de estoque",
-        "action": "É necessário uma ação urgente."
+        "medicine_id": 3,
+        "medicine_name": "Medicamento 3",
+        "type": "Validade",
+        "description": "Descrição do medicamento genérico.",
+        "action": "É necessário uma ação."
     },
 ]

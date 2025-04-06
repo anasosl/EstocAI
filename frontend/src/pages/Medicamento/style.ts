@@ -184,3 +184,66 @@ export const ContainerBox = styled.div<Props>`
   gap: 8px;
   overflow: auto;
 `;
+
+export const RelatorioBox = styled.div<Props>`
+  padding: ${(props: any) => props.padding};
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 35vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+&::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.cinza};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.cinzaEscuro};
+    border-radius: 4px;
+  }
+`;
+
+export const ReportCard = styled.div`
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 28%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-top: 5px solid ${theme.colors.laranjaPrincipal};
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
+`;
+
+export const ReportHeader = styled.div`
+  color: ${theme.colors.laranjaPrincipal};
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.4;
+`;
+
+export const BulletList = styled.ul`
+  list-style-type: disc;
+  padding-left: 1.5rem;
+`;
+
+export const BulletItem = styled.li`
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #333;
+
+  strong {
+    font-weight: bold;
+    color: #000;
+  }
+`;

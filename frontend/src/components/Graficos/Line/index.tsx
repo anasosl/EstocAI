@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LineChart } from '@mui/x-charts';
 import { theme } from '../../../styles/theme';
 
-export default function GraficoLinha() {
+export default function GraficoLinha({dadosX, dadosY}: any) {
   const chartRef = React.useRef<HTMLDivElement>(null);
   const [width, setWidth] = React.useState(800);
 
@@ -20,9 +20,9 @@ export default function GraficoLinha() {
   return (
     <div ref={chartRef} style={{ width: '100%', height: 300 }}>
       <LineChart
-        xAxis={[{ scaleType: 'point', data: ["Maio", "Junho", "Julho", "Agosto"] }]}
+        xAxis={[{ scaleType: 'point', data: dadosX }]}
         series={[{
-          data: [5000, 10500, 16000, 26000],
+          data: dadosY,
           color: theme.colors.laranjaPrincipal
         }]}
         width={width}

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import IconAlerta from '../../assets/IconAlerta.svg';
-import Notificacoes from '../../mocks/Notificacoes.json';
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "../../assets/SearchIcon.svg";
+import axios from "axios";
 
 const NotificationsContainer = styled.div`
   width: 100%;
@@ -110,37 +110,59 @@ const TextBold = styled.h3`
 `;
 
 const NotificationCenter: React.FC = () => {
+  const [notifications, setNotifications] = useState<any[]>([]);
   const [active, setActive] = useState("todas");
 
   const handleClick = (key: string) => setActive(key);
 
   const filterNotifications = () => {
+    if(notifications.length === 0) return [];
+
     if (active === "todas"){
-      return Notificacoes.filter(e => e.tipo)
+      return notifications?.filter(e => e.type);
     } else if (active === "crítico"){
-      return Notificacoes.filter(e => e.tipo === "ESTOQUE CRÍTICO")
-    } else if (active === "atenção"){
-      return Notificacoes.filter(e => e.tipo === "ATENÇÃO")
-    } else if (active === "cuidado"){
-      return Notificacoes.filter(e => e.tipo === "CUIDADO")
-    } return Notificacoes
+      return notifications?.filter(e => e.type === "Crítico");
+    } else if (active === "validade"){
+      return notifications?.filter(e => e.type === "Validade");
+    } else if (active === "excesso"){
+      return notifications?.filter(e => e.type === "Excesso");
+    } return notifications;
   };
 
   const colorTipo = (tipo: any) => {
-    if (tipo === "ESTOQUE CRÍTICO") {
-      return theme.colors.vermelho
-    } else if (tipo === "ATENÇÃO") {
-      return theme.colors.preto423C2C
-    } else if (tipo === "CUIDADO") {
-      return theme.colors.azul
+    if (tipo === "Crítico") {
+      return theme.colors.vermelho;
+    } else if (tipo === "Validade") {
+      return theme.colors.preto423C2C;
+    } else if (tipo === "Excesso") {
+      return theme.colors.azul;
     }
   }
+
+  const fetchNotifications = async () => {
+    try {
+      await axios.get(`${process.env.REACT_APP_API}/notification`)
+      .then((response) => {
+        console.log(response.data.data);
+        setNotifications(response.data.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching notifications:', error);
+      });
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   return( 
     <NotificationsContainer>
       <FilterButtons>
         <TextBold>Notificações</TextBold>
-        {["todas", "crítico", "atenção", "cuidado"].map((key) => (
+        {["todas", "crítico", "validade", "excesso"].map((key) => (
       <FilterButton 
         key={key} 
         active={active === key} 
@@ -165,19 +187,19 @@ const NotificationCenter: React.FC = () => {
       />
 
       <NotificacoesContainer>
-        {filterNotifications().map((item, index) => (
+        {filterNotifications()?.map((item, index) => (
           <NotificationCard key={Number(index)}>
-            <NotificationHeader color={colorTipo(item.tipo)}>
+            <NotificationHeader color={colorTipo(item.type)}>
               <img src={IconAlerta} alt="Alerta" />
-              <NotificationText>{item.tipo}</NotificationText>
+              <NotificationText>{item.type}</NotificationText>
             </NotificationHeader>
 
             <NotificationBody>
               <NotificationText color={theme.colors.preto}>
-                {item.titulo}
+                {item.description}
               </NotificationText>
-              <NotificationText color={theme.colors.cinzaEscuro}>{item.descricao}</NotificationText>
-              <ViewButton onClick={() => window.location.replace(`/medicamento/${item.id}`)}>Visualizar</ViewButton>
+              <NotificationText color={theme.colors.cinzaEscuro}>{item.action}</NotificationText>
+              <ViewButton onClick={() => window.location.replace(`/medicamento/${item.medicine_id}`)}>Visualizar</ViewButton>
             </NotificationBody>
           </NotificationCard>))}
         </NotificacoesContainer>

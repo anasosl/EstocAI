@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }: any): JSX.Element => {
       );
 
       if(response?.status_code !== 200) {
-      sessionStorage.setItem('logged', 'true');
-      sessionStorage.setItem("user", JSON.stringify(response.data.data.company.data));
+      localStorage.setItem('logged', 'true');
+      localStorage.setItem("user", JSON.stringify(response.data.data.company.data));
       setUser(response.data.data.company.data);
       navigate('/home', { state: { logged: true } });
       } else {
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: any): JSX.Element => {
   };
 
   useMemo(() => {
-    const loggedUser = sessionStorage.getItem("user");
+    const loggedUser = localStorage.getItem("user");
     if (loggedUser) {
       setUser(JSON.parse(loggedUser));
     } else {
@@ -59,8 +59,8 @@ export const AuthProvider = ({ children }: any): JSX.Element => {
   }, []);
 
   const logout = () => {
-    sessionStorage.removeItem("user");
-    sessionStorage.setItem('logged', 'false');
+    localStorage.removeItem("user");
+    localStorage.setItem('logged', 'false');
     setUser(null);
     navigate('/Login', { state: { logged: false } });
   };

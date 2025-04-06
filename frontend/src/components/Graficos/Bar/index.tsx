@@ -2,7 +2,11 @@ import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { theme } from '../../../styles/theme';
 
-export default function GraficoBarra() {
+interface GraficoBarraProps {
+  totalEstoque: number;
+}
+
+export default function GraficoBarra({ totalEstoque }: GraficoBarraProps) {
   const chartRef = React.useRef<HTMLDivElement>(null);
   const [width, setWidth] = React.useState(600); // Largura inicial
 
@@ -17,16 +21,22 @@ export default function GraficoBarra() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const setores = ['Almoxarifado', 'Farmácia', 'Centro Cirúrgico', 'Enfermarias', 'UTI'];
+  const valorPorSetor = Math.floor(totalEstoque / setores.length);
+  const resto = totalEstoque % setores.length;
+  const distribuicao = Array(setores.length).fill(valorPorSetor);
+  distribuicao[0] += resto;
+
   return (
     <div ref={chartRef} style={{ width: '100%', height: 300 }}>
       <BarChart
         xAxis={[{ 
           scaleType: 'band', 
-          data: ['Almoxarifado', 'Pronto Socorro', 'Farmácia', 'Centro Cirúrgico', 'Enfermarias', 'UTI', 'Psiquiatria'] 
+          data: setores,
         }]}
         series={[{ 
-          data: [2500, 3200, 4000, 4500, 5000, 6500, 3500],
-          color: theme.colors.verde
+          data: distribuicao,
+          color: theme.colors.verde,
         }]}
         width={width}
         height={300}
