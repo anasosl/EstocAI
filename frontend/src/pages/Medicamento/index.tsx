@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Estrelas from "../../assets/Estrelas.svg";
+import styled from "styled-components";
 import {
   MedicamentoContainer,
   MedicamentoHeader,
@@ -20,10 +21,54 @@ import {
   TextoTopicos,
   ContainerBox,
   LinhaGradiente,
+  RelatorioBox,
 } from './style';
 import { theme } from '../../styles/theme';
 import { GraficoBarra, GraficoLinha, MedicamentoType, LicitacaoStatus } from '../../components';
 import { useParams } from 'react-router-dom';
+
+
+/** Card lateral com as tendências recentes (bullet points) */
+const ReportCard = styled.div`
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 28%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-top: 5px solid ${theme.colors.laranjaPrincipal};
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
+`;
+
+const ReportHeader = styled.div`
+  color: ${theme.colors.laranjaPrincipal};
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.4;
+`;
+
+const BulletList = styled.ul`
+  list-style-type: disc;
+  padding-left: 1.5rem;
+`;
+
+const BulletItem = styled.li`
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #333;
+
+  strong {
+    font-weight: bold;
+    color: #000;
+  }
+`;
+
 
 interface MedicamentoPageProps {
   nome_medicamento?: string;
@@ -52,6 +97,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
   const { id } = useParams<{ id: string }>();
   const [nivelEstoque, setNivelEstoque] = useState<number>(21726);
   const [licitacoes, setLicitacoes] = useState<any[]>([]);
+  const months = -40;
 
   useEffect(() => {
     fetch('/mocks/csv/medicamentos.csv')
@@ -152,30 +198,43 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
 
         <MedicamentoContainer width="40%" style={{ display: "flex", flexDirection: "column" }}>
           <LinhaGradiente />
-          <ContainerBox padding="16px" style={{ flex: 1 }}>
-            <Inline noColumn>
-              <img src={Estrelas} alt="Pesquisar" width={100} />
-              <Texto marginLeft="0" fontSize="16px">
-                Com base nos dados analisados nos últimos três meses, observamos algumas tendências
-              </Texto>
-            </Inline>
-            <TextoTopicos>
-              <li><strong>Alta Demanda:</strong> O uso de Paracetamol e Dipirona aumentou em 18%, refletindo um crescimento nos atendimentos de síndromes gripais.</li>
-              <li><strong>Estoque Crítico:</strong> Medicamentos antibióticos, como Amoxicilina e Azitromicina, estão com níveis reduzidos, exigindo reposição em até 15 dias para evitar desabastecimento.</li>
-              <li><strong>Redução no Consumo:</strong> Anti-hipertensivos como Losartana tiveram uma queda de 12%, possivelmente devido a mudanças nos protocolos de prescrição.</li>
-              <li><strong>Picos Sazonais:</strong> O consumo de antialérgicos subiu 25% devido ao aumento de casos relacionados à polinização sazonal e mudanças climáticas.</li>
-            </TextoTopicos>
-          </ContainerBox>
+          <RelatorioBox padding="16px" style={{ flex: 1 }}>
+            <ReportHeader>
+              ✨ Com base nos dados analisados nos últimos meses, observamos:
+            </ReportHeader>
+            <BulletList>
+              <BulletItem>
+                <strong>Alta Demanda:</strong> O uso de Paracetamol e Dipirona
+                aumentou em 18%, refletindo um crescimento nos atendimentos de
+                síndromes gripais.
+              </BulletItem>
+              <BulletItem>
+                <strong>Estoque Crítico:</strong> Medicamentos antibióticos, como
+                Amoxicilina e Azitromicina, estão com níveis reduzidos, exigindo
+                reposição em até 15 dias para evitar desabastecimento.
+              </BulletItem>
+              <BulletItem>
+                <strong>Redução no Consumo:</strong> Anti-hipertensivos como
+                Losartana tiveram uma queda de 12%, possivelmente devido a
+                mudanças nos protocolos de prescrição.
+              </BulletItem>
+              <BulletItem>
+                <strong>Picos Sazonais:</strong> O consumo de antialérgicos subiu
+                25% devido ao aumento de casos relacionados à polinização sazonal
+                e mudanças climáticas.
+              </BulletItem>
+            </BulletList>
+          </RelatorioBox>
         </MedicamentoContainer>
       </Inline>
 
-
+      <Inline style={{ display: "flex", alignItems: "stretch" }}>
         <MedicamentoContainer width="100%">
           <Linha height="50px">
             <Texto marginLeft="0" fontSize="16px" color={theme.colors.branco}>Movimentação do estoque {medicamento?.nome_medicamento}</Texto>
           </Linha>
           <ContainerBox padding="16px">
-            {inputAI?.dadosX && inputAI?.dadosY && <GraficoLinha dadosX={inputAI?.dadosX} dadosY={inputAI?.dadosY}/>}
+            {inputAI?.dadosX && inputAI?.dadosY && <GraficoLinha dadosX={inputAI?.dadosX.slice(months)} dadosY={inputAI?.dadosY.slice(months)}/>}
           </ContainerBox>
         </MedicamentoContainer> 
 
@@ -187,6 +246,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
             <GraficoBarra totalEstoque={nivelEstoque}/>
           </ContainerBox>
         </MedicamentoContainer>
+      </Inline>
     </ContainerPage>
   );
 };

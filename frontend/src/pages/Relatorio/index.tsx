@@ -58,6 +58,23 @@ const ReportCard = styled.div`
   flex-direction: column;
   gap: 1rem;
 
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.cinza};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.cinzaEscuro};
+    border-radius: 4px;
+  }
+
   @media screen and (max-width: 1024px) {
     width: 100%;
   }
@@ -283,8 +300,7 @@ export const Relatorio: React.FC = () => {
         {/** Card lateral de tendências recentes (bullet points) */}
         <ReportCard>
           <ReportHeader>
-            ✨ Com base nos dados analisados nos últimos três meses, observamos
-            algumas tendências:
+            ✨ Com base nos dados analisados nos últimos meses, observamos:
           </ReportHeader>
           <BulletList>
             <BulletItem>

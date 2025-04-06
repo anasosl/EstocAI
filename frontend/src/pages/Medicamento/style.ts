@@ -184,3 +184,26 @@ export const ContainerBox = styled.div<Props>`
   gap: 8px;
   overflow: auto;
 `;
+
+export const RelatorioBox = styled.div<Props>`
+  padding: ${(props: any) => props.padding};
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 35vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+&::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.cinza};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.cinzaEscuro};
+    border-radius: 4px;
+  }
+`;
