@@ -22,53 +22,15 @@ import {
   ContainerBox,
   LinhaGradiente,
   RelatorioBox,
+  ReportCard,
+  ReportHeader,
+  BulletList,
+  BulletItem,
+  
 } from './style';
 import { theme } from '../../styles/theme';
 import { GraficoBarra, GraficoLinha, MedicamentoType, LicitacaoStatus } from '../../components';
 import { useParams } from 'react-router-dom';
-
-
-/** Card lateral com as tendências recentes (bullet points) */
-const ReportCard = styled.div`
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  width: 28%;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border-top: 5px solid ${theme.colors.laranjaPrincipal};
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  @media screen and (max-width: 1024px) {
-    width: 100%;
-  }
-`;
-
-const ReportHeader = styled.div`
-  color: ${theme.colors.laranjaPrincipal};
-  font-weight: bold;
-  font-size: 1.2rem;
-  line-height: 1.4;
-`;
-
-const BulletList = styled.ul`
-  list-style-type: disc;
-  padding-left: 1.5rem;
-`;
-
-const BulletItem = styled.li`
-  margin-bottom: 0.8rem;
-  font-size: 1rem;
-  line-height: 1.4;
-  color: #333;
-
-  strong {
-    font-weight: bold;
-    color: #000;
-  }
-`;
-
 
 interface MedicamentoPageProps {
   nome_medicamento?: string;
