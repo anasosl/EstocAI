@@ -223,6 +223,7 @@ export const Relatorio: React.FC = () => {
         .get(`${process.env.REACT_APP_API}/model/prediction`)
         .then((response) => {
           const data = response.data.data.result;
+          console.log("Dados recebidos:", data);
           setTableData(data);
         })
         .catch((error) => {
@@ -320,12 +321,12 @@ export const Relatorio: React.FC = () => {
                 console.log(item),
                 <tr key={index}>
                   <Td>{item.nome_medicamento}</Td>
-                  <Td>{item.avg_consumption_rate.toFixed(1)}</Td>
-                  <Td>{item.cost_of_lot.toFixed(1)}</Td>
-                  <Td>{item.last_month_avg_consumption.toFixed(1)}</Td>
+                  <Td>{item.avg_consumption_rate !== null ? item.avg_consumption_rate.toFixed(1): '-'}</Td>
+                  <Td>{item.cost_of_lot !== null ? item.cost_of_lot.toFixed(1): '-'}</Td>
+                  <Td>{item.last_month_avg_consumption !== null ? item.last_month_avg_consumption.toFixed(1): '-'}</Td>
                   <Td>{item.optimal_order_date}</Td>
-                  <Td>{item.order_quantity.toFixed(0)}</Td>
-                  <Td>{item.percentage_consumed.toFixed(2)}</Td>
+                  <Td>{item.order_quantity !== null ? item.order_quantity.toFixed(0): '-'}</Td>
+                  <Td>{item.percentage_consumed !== null ? item.percentage_consumed .toFixed(2): '-'}</Td>
                   <Td>{item.procurement_mode}</Td>
                   <Td>{item.tipo}</Td>
                   <Td>
