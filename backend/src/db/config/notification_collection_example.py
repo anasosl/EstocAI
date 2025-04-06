@@ -1,23 +1,30 @@
 NOTIFICATION_COLLECTION_EXAMPLE = [
     {
         "medicine_id": 1,
-        "medicine_name": "Medicamento 1",
+        "medicine_name": "MORFINA",
         "type": "Crítico",
-        "description": "Descrição do medicamento genérico.",
-        "action": "É necessário uma ação urgente."
+        "description": "MORFINA teve um alto uso esse mês.",
+        "action": ""
     },
     {
         "medicine_id": 2,
-        "medicine_name": "Medicamento 2",
+        "medicine_name": "PARACETAMOL",
         "type": "Crítico",
-        "description": "Descrição do medicamento genérico.",
-        "action": "É necessário uma ação urgente."
+        "description": "PARACETAMOL teve um alto uso esse mês.",
+        "action": ""
     },
     {
         "medicine_id": 3,
-        "medicine_name": "Medicamento 3",
+        "medicine_name": "TRAMADOL",
         "type": "Validade",
-        "description": "Descrição do medicamento genérico.",
-        "action": "É necessário uma ação."
+        "description": "TRAMADOL passou da validade.",
+        "action": ""
+    },
+    {
+        "medicine_id": 4,
+        "medicine_name": "CETOPROFENO",
+        "type": "Excesso",
+        "description": "CETOPROFENO teve um baixo uso esse mês.",
+        "action": ""
     },
 ]
