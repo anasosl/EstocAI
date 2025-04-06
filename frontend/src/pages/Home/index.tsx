@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { NotificationCenter } from "../../components";
 import assets from '../../assets';
-import { TextField, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment, Autocomplete } from "@mui/material";
 import ButtonBuscar from "../../assets/ButtonBuscar.svg";
 import { theme } from "../../styles/theme";
+import axios from "axios";
 
 const PageContainer = styled.div`
   display: flex;
@@ -88,20 +89,70 @@ const Column = styled.div`
 `;
 
 export const Home: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (searchTerm.length > 0) {
+      const fetchSuggestions = async () => {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API}/medicine`, {
+            params: { search: searchTerm },
+          });
+          console.log("Resposta:", response);
+          const data = response.data.data;
+          setSuggestions(Array.isArray(data) ? data : []);
+        } catch (error) {
+          console.error("Erro ao buscar sugestões:", error);
+          setSuggestions([]);
+        }
+      };
+      fetchSuggestions();
+    } else {
+      setSuggestions([]);
+    }
+  }, [searchTerm]);
+
   return (
     <PageContainer>
       <Title>Veja as tendências de estoque para um medicamento</Title>
-      <TextField
-        placeholder="Busque nas notificações"
-        variant="outlined"
-        sx={{ width: '80%', borderRadius: 4, backgroundColor: theme.colors.branco }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <img src={ButtonBuscar} alt="Pesquisar" style={{ cursor: "pointer" }}/>
-            </InputAdornment>
-          ),
+      <Autocomplete
+        freeSolo
+        popupIcon={null}
+        options={suggestions}
+        getOptionLabel={(option) => option.name || ""}
+        inputValue={searchTerm}
+        sx={{ width: "80%"}}
+        onInputChange={(event, newInputValue) => setSearchTerm(newInputValue)}
+        onChange={(event, value) => {
+          if (value && value.name) {
+            window.location.href = `/medicamento/${value.id}`;
+          }
         }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            fullWidth
+            placeholder="Busque nas notificações"
+            variant="outlined"
+            sx={{ width: "100%", borderRadius: 4, backgroundColor: theme.colors.branco }}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <img
+                    src={ButtonBuscar}
+                    alt="Pesquisar"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      
+                    }}
+                  />
+                </InputAdornment>
+              ),
+            }}
+          />
+        )}
       />
 
       <MainContent>
