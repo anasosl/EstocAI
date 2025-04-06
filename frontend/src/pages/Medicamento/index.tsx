@@ -22,7 +22,7 @@ import {
   LinhaGradiente,
 } from './style';
 import { theme } from '../../styles/theme';
-import { GraficoBarra, GraficoLinha, MedicamentoType } from '../../components';
+import { GraficoBarra, GraficoLinha, MedicamentoType, LicitacaoStatus } from '../../components';
 import { useParams } from 'react-router-dom';
 
 interface MedicamentoPageProps {
@@ -51,6 +51,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
   const [inputAI, setInputAI] = useState<any>();
   const { id } = useParams<{ id: string }>();
   const [nivelEstoque, setNivelEstoque] = useState<number>(21726);
+  const [licitacoes, setLicitacoes] = useState<any[]>([]);
 
   useEffect(() => {
     fetch('/mocks/csv/medicamentos.csv')
@@ -95,6 +96,17 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
             setNivelEstoque(quantidade);
           }
         }
+
+        setLicitacoes([
+          ["Farmácia Tralalá", "05/02/25", "500 caixas", "0.4"],
+          ["Farmácia Mergulhito", "12/10/24", "200 caixas", "0.7"],
+          ["Farmácia Jão e maria", "16/10/24", "300 caixas", "0.2"],
+          ["Farmácia Filadelfia", "7/10/24", "100 caixas", "0.9"],
+          ["Farmácia Pain", "2/10/24", "400 caixas", "0.53"],
+          ["Farmácia Montecarlos", "26/10/25", "600 caixas", "0.75"],
+          ["Farmácia Fernando", "13/10/26", "50 caixas", "0.35"],
+
+        ])
       });
   }, []);
   
@@ -132,8 +144,8 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
               <MedicamentoHeader>
                 <h2>Status das licitações</h2>
               </MedicamentoHeader>
-              
-              
+              <LicitacaoStatus
+                licitacoes={licitacoes}/>
             </MedicamentoInfo>
           </MedicamentoBody>
         </MedicamentoContainer>
