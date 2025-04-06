@@ -108,9 +108,9 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
         }
 
         setLicitacoes([
-          ["Farmácia Tralalá", "05/02/25", "500 caixas", "0.4"],
-          ["Farmácia Mergulhito", "12/10/24", "200 caixas", "0.7"],
-          ["Farmácia Jão e maria", "16/10/24", "300 caixas", "0.2"],
+          ["Farmácia Medfarma", "05/02/25", "500 caixas", "0.4"],
+          ["Farmácia BelaCruz", "12/10/24", "200 caixas", "0.7"],
+          ["Farmácia Panfarma", "16/10/24", "300 caixas", "0.2"],
           ["Farmácia Filadelfia", "7/10/24", "100 caixas", "0.9"],
           ["Farmácia Pain", "2/10/24", "400 caixas", "0.53"],
           ["Farmácia Montecarlos", "26/10/25", "600 caixas", "0.75"],
@@ -180,7 +180,10 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
           <LinhaGradiente />
           <RelatorioBox padding="16px" style={{ flex: 1 }}>
             <ReportHeader>
-              ✨ Com base nos dados analisados nos últimos meses, observamos:
+              <Inline>
+                <img src={Estrelas} alt="Pesquisar" width={70} />
+                Com base nos dados analisados nos últimos meses, observamos:
+              </Inline>
             </ReportHeader>
             {report ? (
               <div

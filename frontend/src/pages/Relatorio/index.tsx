@@ -5,6 +5,8 @@ import { saveAs } from "file-saver";
 import IconEditar from "../../assets/IconEditar.svg";
 import IconSalvar from "../../assets/IconSalvar.svg";
 import axios from "axios";
+import Estrelas from "../../assets/Estrelas.svg";
+import { Inline } from "../Login/style";
 
 type Props = {
   $borderRadius?: string;
@@ -352,8 +354,12 @@ export const Relatorio: React.FC = () => {
 
         {/** Card lateral de tendências recentes (bullet points) */}
         <ReportCard>
+          
           <ReportHeader>
-            ✨ Com base nos dados analisados nos últimos meses, observamos:
+            <Inline>
+              <img src={Estrelas} alt="Pesquisar" width={80} />
+              Com base nos dados analisados nos últimos meses, observamos:
+            </Inline>
           </ReportHeader>
           {report ? (
               <div
