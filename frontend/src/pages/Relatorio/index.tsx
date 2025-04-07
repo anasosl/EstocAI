@@ -192,21 +192,6 @@ export const Relatorio: React.FC = () => {
   const [report, setReport] = useState<string>("");
   const [columnKeys, setColumnKeys] = useState<string[]>([]);
 
-  // Exporta a tabela para CSV usando file-saver
-  const handleExportCSV = () => {
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      ["Medicamento,Fornecedor,Quantidade"]
-        .concat(
-          data.map(
-            (row) => `${row.medicamento},${row.fornecedor},${row.quantidade}`
-          )
-        )
-        .join("\n");
-    const encodedUri = encodeURI(csvContent);
-    saveAs(encodedUri, "relatorio_medicamentos.csv");
-  };
-
   // Edita a quantidade de um item da tabela via prompt
   const handleEdit = (index: number) => {
     const newData = [...data];
@@ -236,6 +221,62 @@ export const Relatorio: React.FC = () => {
       console.error("Erro ao buscar os dados:", error);
     }
   };
+
+  // Novo metodo de exportar o CSV
+  const handleExportCSV = () => {
+    const headers = [
+      "Nome",
+      "Taxa média de consumo",
+      "Taxa média de consumo do último mês",
+      "Data ótima para compra",
+      "Quantidade a pedir",
+      "Custo do Lote",
+      "Aquisição",
+      "Total Consumido",
+      "Tipo",
+    ];
+  
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers.join(",")].concat(
+        tableData.map((item) => {
+          const nome = item.nome_medicamento;
+          const avgConsumption =
+            item.avg_consumption_rate !== null
+              ? item.avg_consumption_rate.toFixed(1)
+              : null;
+          const lastMonthAvg =
+            item.last_month_avg_consumption !== null
+              ? item.last_month_avg_consumption.toFixed(1)
+              : null;
+          const optimalOrderDate = item.optimal_order_date;
+          const orderQuantity =
+            item.order_quantity !== null
+              ? item.order_quantity.toFixed(0)
+              : null;
+          const costOfLot =
+            item.cost_of_lot !== null
+              ? item.cost_of_lot.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                  minimumFractionDigits: 1,
+                })
+              : null;
+          const procurementMode = item.procurement_mode;
+          const totalConsumed =
+            item.percentage_consumed !== null
+              ? item.percentage_consumed.toFixed(2)
+              : null;
+          const tipo = item.tipo;
+          
+          return `${nome},${avgConsumption},${lastMonthAvg},${optimalOrderDate},${orderQuantity},${costOfLot},${procurementMode},${totalConsumed},${tipo}`;
+        })
+      ).join("\n");
+  
+    const encodedUri = encodeURI(csvContent);
+    saveAs(encodedUri, "planilha_de_aquisicao.csv");
+  };
+  
 
   useEffect(() => {
     fetchData();
@@ -309,14 +350,13 @@ export const Relatorio: React.FC = () => {
               <tr>
                 <Th $borderRadius="6px 0 0 0">Nome</Th>
                 <Th>Taxa média de consumo</Th>
-                <Th>Custo do Lote</Th>
-                <Th>Consumo médio último mês</Th>
+                <Th>Taxa média de consumo do último mês</Th>
                 <Th>Data ótima para compra</Th>
                 <Th>Quantidade a pedir</Th>
-                <Th>Total Consumido</Th>
+                <Th>Custo do Lote</Th>
                 <Th>Aquisição</Th>
-                <Th>Tipo</Th>
-                <Th $borderRadius="0 6px 0 0">Ações</Th>
+                <Th>Total Consumido</Th>
+                <Th $borderRadius="0 6px 0 0">Tipo</Th>
               </tr>
             </thead>
             <tbody>
@@ -325,18 +365,21 @@ export const Relatorio: React.FC = () => {
                 <tr key={index}>
                   <Td>{item.nome_medicamento}</Td>
                   <Td>{item.avg_consumption_rate !== null ? item.avg_consumption_rate.toFixed(1): '-'}</Td>
-                  <Td>{item.cost_of_lot !== null ? item.cost_of_lot.toFixed(1): '-'}</Td>
                   <Td>{item.last_month_avg_consumption !== null ? item.last_month_avg_consumption.toFixed(1): '-'}</Td>
                   <Td>{item.optimal_order_date}</Td>
                   <Td>{item.order_quantity !== null ? item.order_quantity.toFixed(0): '-'}</Td>
-                  <Td>{item.percentage_consumed !== null ? item.percentage_consumed .toFixed(2): '-'}</Td>
-                  <Td>{item.procurement_mode}</Td>
-                  <Td>{item.tipo}</Td>
                   <Td>
-                    <IconButton onClick={() => handleEdit(index)}>
-                      <img src={IconEditar} alt="Icone de editar" />
-                    </IconButton>
+                    {item.cost_of_lot !== null 
+                      ? item.cost_of_lot.toLocaleString('pt-BR', { 
+                          style: 'currency', 
+                          currency: 'BRL', 
+                          minimumFractionDigits: 1 
+                        })
+                      : '-'}
                   </Td>
+                  <Td>{item.procurement_mode}</Td>
+                  <Td>{item.percentage_consumed !== null ? item.percentage_consumed .toFixed(2): '-'}</Td>
+                  <Td>{item.tipo}</Td>
                 </tr>
               ))}
             </tbody>
@@ -346,7 +389,7 @@ export const Relatorio: React.FC = () => {
             <IconButton onClick={handleExportCSV}>
               <img src={IconSalvar} alt="Icone de editar" />
             </IconButton>
-            <PurchaseButton>
+            <PurchaseButton onClick={() => window.location.replace('/home')}>
               Gerar Compra
             </PurchaseButton>
           </ButtonContainer>

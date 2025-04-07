@@ -104,7 +104,7 @@ const Navbar: FC = () => {
       <NavLinks>
         {user?.id && localStorage.getItem('logged') === 'true' ? (
           <>
-            <NavLink>Pesquisa por Medicamento</NavLink>
+            <NavLink onClick={() => window.location.replace('/home')}>Pesquisa por Medicamento</NavLink>
             <NavLink onClick={() => window.location.replace('/relatorio')}>Relatório Inteligente</NavLink>
           </>
         ) : (

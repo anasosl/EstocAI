@@ -212,7 +212,7 @@ const MedicamentoPage: React.FC<MedicamentoPageProps> = ({
             <Texto marginLeft="0" fontSize="16px" color={theme.colors.branco}>Visualização do estoque por satélite</Texto>
           </Linha>
           <ContainerBox padding="16px">
-            <GraficoBarra totalEstoque={nivelEstoque} />
+            <GraficoBarra totalEstoque={nivelEstoque} id={Number(medicamento?.id_medicamento)} />
           </ContainerBox>
         </MedicamentoContainer>
       </Inline>
