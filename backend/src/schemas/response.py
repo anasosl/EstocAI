@@ -14,6 +14,13 @@ class HTTPResponses:
             message="USER not found",
             status_code=404,
         )
+    
+    @staticmethod
+    def MODEL_RETURNED() -> HttpResponseModel:
+        return HttpResponseModel(
+            message="MODEL returned",
+            status_code=200,
+        )
 
     @staticmethod
     def USER_FOUND() -> HttpResponseModel:
