@@ -21,7 +21,7 @@ export default function GraficoBarra({ totalEstoque }: GraficoBarraProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const setores = ['Almoxarifado', 'Farmácia', 'Centro Cirúrgico', 'Enfermarias', 'UTI'];
+  const setores = ['Almoxarifado', 'Cardiologia', 'Oncologia', 'Pediatria', 'UTI'];
   const valorPorSetor = Math.floor(totalEstoque / setores.length);
   const resto = totalEstoque % setores.length;
   const distribuicao = Array(setores.length).fill(valorPorSetor);

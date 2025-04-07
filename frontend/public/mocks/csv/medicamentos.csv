@@ -1,5 +1,5 @@
 id_medicamento,nome_medicamento,descricao,tipo
 1,MORFINA (dimorf) 10 mg 50 comprimidos,Potente analgésico opioide utilizado no controle de dores intensas.,Critical
 2,PARACETAMOL 750 mg 12 comprimidos (genérico),Analgésico e antitérmico utilizado no tratamento de dores leves a moderadas e para redução da febre.,Critical
-3,TRAMADOL 100mg 20 comprimidos (genérico),Analgésico opioide utilizado para tratar dores moderadas a intensas.,Critical
+3,TRAMADOL 100mg 20 comprimidos (genérico),Analgésico opioide utilizado para tratar dores moderadas a intensas.,Not-Critical
 4,CETOPROFENO 150 mg 10 comprimidos (genérico),Anti-inflamatório não esteroide (AINE) com ação analgésica e antipirética.,Not-Critical
